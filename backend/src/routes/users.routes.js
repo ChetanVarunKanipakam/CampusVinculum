@@ -7,4 +7,5 @@ router.post('/login', login);
 router.put('/update/:id', updateProfile);
 router.get('/logout' , logout);
 
+
 export default router;
