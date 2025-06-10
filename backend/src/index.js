@@ -23,6 +23,8 @@ import jobRoutes from './routes/jobPostings.routes.js';
 
 const app=express();
 
+app.use(express.json());
+
 app.use('/api/timetables', timetableRoutes);
 app.use('/api/exams', examRoutes);
 app.use('/api/users', userRoutes);

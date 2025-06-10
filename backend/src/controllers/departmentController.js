@@ -1,6 +1,7 @@
 import departmentModel from "../models/department.model.js";
 //add dept
-export const adddepartment = async(req,res)=>{
+export const addDepartment = async(req,res)=>{
+  console.log(req.body);
     try{
         const{name,description}=req.body;
         const dept=new departmentModel({name,description});
