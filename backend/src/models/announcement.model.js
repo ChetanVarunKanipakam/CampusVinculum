@@ -5,7 +5,8 @@ const announcementSchema = new mongoose.Schema({
   content: String,
   postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   postedDate: Date,
-  targetAudience: String
+  targetAudience: {type: String,enum: ['Student', 'Faculty', 'Admin', 'Alumni']},
+  modifiedDate: Date
 });
 
 export default mongoose.model('Announcement', announcementSchema);
