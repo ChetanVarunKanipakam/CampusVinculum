@@ -3,7 +3,7 @@ import postModel from "../models/post.model.js";
 export const createPost=async(req,res)=>{
     try{
         const{threadID,content,postedBy}=req.body;
-        const newPost=new Post({threadID,content,postedBy,postedDare:new Date(),modifiedDate: new Date()   
+        const newPost=new postModel({threadID,content,postedBy,postedDare:new Date(),modifiedDate: new Date()   
         });
         //const savedPost=await newPost.save();
         res.status(200).json({message:"Post created successfully"});
@@ -17,7 +17,7 @@ export const updatePost=async (req,res)=>{
     try{
     const {threadID}=req.params;
     const {content}=req.body;
-    const updatedPost=await Post.findByIdAndUpdate(
+    const updatedPost=await postModel.findByIdAndUpdate(
         postId,{content,modifiedData: new Data()},{new: true}
     );
     if(!updatedPost)
@@ -35,7 +35,7 @@ export const deletePost = async (req, res) => {
   try {
     const { postId } = req.params;
 
-    const deletedPost = await Post.findByIdAndDelete(postId);
+    const deletedPost = await postModel.findByIdAndDelete(postId);
     if (!deletedPost) {
       return res.status(404).json({ error: 'Post not found' });
     }

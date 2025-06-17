@@ -4,7 +4,7 @@ export const addCourse = async (req, res) => {
   try {
     const { title, description, credits, departmentID } = req.body;
 
-    const newCourse = new Course({
+    const newCourse = new courseModel({
       title,
       description,
       credits,
@@ -24,7 +24,7 @@ export const getCoursesByDept = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(departmentID)) {
       return res.status(400).json({ message: 'Invalid department ID.' });
     }
-    const courses = await Course.find({ departmentID });
+    const courses = await courseModel.find({ departmentID });
     res.status(200).json(courses);
   } catch (err) {
     console.error('Error fetching courses by department:', err);
@@ -41,7 +41,7 @@ export const updateCredits = async (req, res) => {
       return res.status(400).json({ message: 'Invalid course ID.' });
     }
 
-    const updated = await Course.findByIdAndUpdate(
+    const updated = await courseModel.findByIdAndUpdate(
       courseID,
       { $set: { credits } },
       { new: true }

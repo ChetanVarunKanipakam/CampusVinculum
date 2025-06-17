@@ -17,7 +17,7 @@ export const updateDepartmentDescription=async(req,res)=>{
     try{
         const {deptId}=req.params;
         const {description}=req.body;
-        const dept=await Department.findByIdAndUpdate(
+        const dept=await departmentModel.findByIdAndUpdate(
             deptId,
             {description},
             {new:true}
@@ -34,7 +34,7 @@ export const updateDepartmentDescription=async(req,res)=>{
 export const getDepartmentById=async(req,res)=>{
     try{
         const{deptId}=req.params;
-    const dept = await Department.findById(deptId);
+    const dept = await departmentModel.findById(deptId);
     if (!dept) {
       return res.status(404).json({ message: 'Department not found' });
     }

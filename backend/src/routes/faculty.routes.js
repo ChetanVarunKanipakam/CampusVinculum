@@ -1,7 +1,5 @@
 import express from 'express';
 import {addFaculty,getAllFaculty} from "../controllers/facultyController.js";
-
-import express from 'express';
 const router = express.Router();
 router.post('/', addFaculty);
 

@@ -3,7 +3,7 @@ import clubMembershipModel from "../models/clubMembership.model.js";
 export const addMembership = async (req, res) => {
   try {
     const { clubID, userID, role } = req.body;
-    const newMembership = new ClubMembership({
+    const newMembership = new clubMembershipModel({
       clubID,
       userID,
       role,
@@ -24,7 +24,7 @@ export const getMembersByClub = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(clubID)) {
       return res.status(400).json({ message: 'Invalid club ID.' });
     }
-    const members = await ClubMembership.find({ clubID })
+    const members = await clubMembershipModel.find({ clubID })
       .populate('userID', 'name email role') // adjust fields as needed
       .select('userID role joinDate');
     res.status(200).json(members);

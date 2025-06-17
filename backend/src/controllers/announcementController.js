@@ -32,7 +32,7 @@ export const updateAnnouncement=async(req,res)=>{
 //fetch all announcements
 export const getAllAnnouncements = async (req, res) => {
   try {
-    const list = await Announcement.find()
+    const list = await announcementModel.find()
       .populate('postedBy', 'name email')
       .sort({ postedDate: -1 });
     res.json(list);
@@ -47,7 +47,7 @@ export const getAnnouncementsByRole=async(req,res)=>{
     return res.status(400).json({ error: 'Invalid role' });
   }
   try {
-    const list = await Announcement.find({ targetAudience: role })
+    const list = await announcementModel.find({ targetAudience: role })
       .populate('postedBy', 'name email')
       .sort({ postedDate: -1 });
     res.json(list);

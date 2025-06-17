@@ -3,7 +3,7 @@ import enrollmentModel from "../models/enrollment.model.js";
 export const enrollStudent = async (req, res) => {
   try {
     const { userID, courseID } = req.body;
-    const newEnroll = new Enrollment({
+    const newEnroll = new enrollmentModel({
       userID,
       courseID,
       enrollmentDate: new Date(),
@@ -25,7 +25,7 @@ export const updateGrade = async (req, res) => {
       return res.status(400).json({ message: 'Invalid IDs in request.' });
     }
 
-    const updated = await Enrollment.findOneAndUpdate(
+    const updated = await enrollmentModel.findOneAndUpdate(
       { userID, courseID },
       { grade },
       { new: true }

@@ -2,7 +2,7 @@ import eventModel from "../models/event.model.js";
 export const addEvent=async(req,res)=>{
     try{
     const { title,description,date,time,venue,organizedBy,clubID}=req.body;
-    const newEvent=new Event({
+    const newEvent=new eventModel({
         title,description,date: newDate(date),
         time,venue,organizedBy,clubID
     });
@@ -16,7 +16,7 @@ export const addEvent=async(req,res)=>{
 // Get all events
 export const getAllEvents = async (req, res) => {
   try {
-    const events = await Event.find()
+    const events = await eventModel.find()
       .populate('organizedBy', 'name email')
       .populate('clubID', 'name');
     res.status(200).json(events);
@@ -32,7 +32,7 @@ export const getEventsByClub = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(clubID)) {
       return res.status(400).json({ message: 'Invalid club ID.' });
     }
-    const events = await Event.find({ clubID })
+    const events = await eventModel.find({ clubID })
       .populate('organizedBy', 'name email');
     res.status(200).json(events);
   } catch (err) {
