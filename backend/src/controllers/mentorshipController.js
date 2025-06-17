@@ -1,4 +1,4 @@
-import mentorshipModel from "../models/mentorship.model";
+import mentorshipModel from "../models/mentorship.model.js";
 export const addMentorship=async(requestAnimationFrame, res)=>{
     try{
         const{ aluminiID, studentID,startDate, endDate,status}=req.body;
