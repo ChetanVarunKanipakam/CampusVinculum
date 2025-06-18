@@ -1,5 +1,6 @@
 import connectDB from './db/db.js';
 import express from 'express';
+import cors from 'cors';
 import timetableRoutes from './routes/timetable.routes.js';
 import examRoutes from './routes/examschedule.routes.js';
 import userRoutes from './routes/users.routes.js';
@@ -22,7 +23,10 @@ import jobRoutes from './routes/jobPostings.routes.js';
 
 
 const app=express();
-
+app.use(cors({
+  origin: "http://localhost:5173", 
+  credentials: true             
+}));
 app.use(express.json());
 
 app.use('/api/timetables', timetableRoutes);

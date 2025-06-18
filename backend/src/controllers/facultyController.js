@@ -1,4 +1,4 @@
-import Faculty from '../models/Faculty.js'; // Adjust the path as needed
+import Faculty from '../models/faculty.model.js'; // Adjust the path as needed
 
 // Add Faculty (POST)
 export const addFaculty = async (req, res) => {

@@ -6,7 +6,6 @@ export default async function generateres(query){
      
         const result = await model.generateContent([query]);
         const analysis = result.response.text();
-        console.log(analysis);
         return  analysis;
       } catch(error) {
         console.error("Error summarizing the text:", error);

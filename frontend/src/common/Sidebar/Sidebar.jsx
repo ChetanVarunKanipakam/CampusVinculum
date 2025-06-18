@@ -35,29 +35,35 @@ const SidebarMenu = () => {
     userDataCalling();
   }, []);
 
-  const SidebarContent = () => (
-    <div className="w-60 h-full flex flex-col justify-start gap-y-5 mt-5 items-center p-4 overflowY-scroll">
-      <div className="w-full flex flex-col items-center">
-        <div className="w-24 md:w-28 flex mt-4">
-          <Link to="/profile" className="w-full rounded-full">
-            <img
-              src={profPic}
-              alt={userData.name || "#"}
-              className="w-full rounded-full object-cover"
-            />
-          </Link>
-        </div>
-        <div className="mt-3 mb-4 flex flex-col items-center">
-          <Link to="/profile" className="text-blue-700 font-bold text-xl">
-            {userData.name}
-          </Link>
-          <Link to="/profile" className="text-gray-600 font-bold text-base">
-            Chetan
-          </Link>
-        </div>
-      </div>
+  
 
-      <div className="w-12/12 flex">
+  return (
+  <>
+    {/* Desktop Sidebar */}
+    <div className="hidden lg:inline-block w-2/12 h-screen shadow-2xl background_gradient_color fixed left-0 top-4 overflow-y-auto">
+      <div className="w-full h-full flex flex-col justify-start gap-y-5 items-center p-4">
+        {/* User Profile Section */}
+        <div className="w-full flex flex-col items-center">
+          <div className="w-24 md:w-28 flex mt-4">
+            <Link to="/profile" className="w-full rounded-full">
+              <img
+                src={profPic}
+                alt={userData.name || "#"}
+                className="w-full rounded-full object-cover"
+              />
+            </Link>
+          </div>
+          <div className="mt-3 mb-4 flex flex-col items-center">
+            <Link to="/profile" className="text-blue-700 font-bold text-xl">
+              {userData.name}
+            </Link>
+            <Link to="/profile" className="text-gray-600 font-bold text-base">
+              Chetan
+            </Link>
+          </div>
+        </div>
+
+        <div className="w-12/12 flex">
         <NavLink to="/dashboard" className="w-full text-base font-bold py-1 px-3 text-blue-800 hover:bg-blue-600 hover:text-white rounded flex items-center gap-x-2">
           <MdSpaceDashboard /> Dashboard
         </NavLink>
@@ -98,28 +104,21 @@ const SidebarMenu = () => {
         </NavLink>
       </div>
 
-      <div className="w-full flex flex-col gap-y-2 items-center mt-6">
-        <hr className="border border-blue-700 mb-3 w-full" />
-        <div className="text-xl text-blue-700 font-bold">Follow Me</div>
-        <div className="w-8/12 flex justify-center gap-x-2 text-2xl text-blue-900">
-          <a href="https://in.linkedin.com/in/" target="_blank"><FaLinkedin /></a>
-          <a href="https://github.com/Vennela115" target="_blank"><FaGithub /></a>
-          <a href="https://x.com/" target="_blank"><BsTwitterX /></a>
-          
+        {/* Social Media Section */}
+        <div className="w-full flex flex-col gap-y-2 items-center mt-6">
+          <hr className="border border-blue-700 mb-3 w-full" />
+          <div className="text-xl text-blue-700 font-bold">Follow Me</div>
+          <div className="w-8/12 flex justify-center gap-x-2 text-2xl text-blue-900">
+            <a href="https://in.linkedin.com/in/" target="_blank"><FaLinkedin /></a>
+            <a href="https://github.com/Vennela115" target="_blank"><FaGithub /></a>
+            <a href="https://x.com/" target="_blank"><BsTwitterX /></a>
+          </div>
         </div>
       </div>
     </div>
-  );
+  </>
+);
 
-  return (
-    <>
-
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:inline-block w-2/12 h-full shadow-2xl background_gradient_color fixed left-0 top-0">
-        {SidebarContent()}
-      </div>
-    </>
-  );
 };
 
 export default SidebarMenu;

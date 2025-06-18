@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -21,9 +21,30 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import StarIcon from "@mui/icons-material/Star";
 import SidebarMenu from "../../common/sidebar/Sidebar";
 import rgukt from "@/assets/rgukt.jpg";
+import NotificationButton from "../../common/NotificationButton/NotificationButton";
+
+// Add this array of image imports at the top with others:
+import img1 from "@/assets/rgukt.jpg";
+import img2 from "@/assets/rgukt1.jpg";
+import img3 from "@/assets/rgukt2.jpg";
+
+const images = [img1, img2, img3]; // carousel images
+
+// Inside your Dashboard component
 
 const Dashboard = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentImage((prev) => (prev + 1) % images.length);
+  }, 3000); // change image every 3 seconds
+  return () => clearInterval(interval);
+}, []);
+
   return (
+    <>
+    <NotificationButton/>
     <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
       {/* Sidebar */}
       <Box sx={{ width: 240, bgcolor: "#f5f5f5", height: "100vh", flexShrink: 0 }}>
@@ -35,26 +56,53 @@ const Dashboard = () => {
         sx={{
           flexGrow: 1,
           p: { xs: 2, md: 4 },
+          mt: 5,
           overflowY: "auto",
           bgcolor: "#f0f0fa",
         }}
       >
         {/* Header */}
-        <Box display="flex" flexDirection="row" alignItems="center" mb={5}>
-          <img src={rgukt} alt="logo" width="70%" />
-          <Typography
-            variant="h4"
-            fontWeight={1000}
-            fontSize={60}
-            color="primary"
-            ml={2}
-            sx={{ letterSpacing: 1 }}
-          >
-            Rgukt <br/>
-            Rk Valley
-          </Typography>
-          
+        <Box display="flex" flexDirection={{ xs: "column", md: "row" }} alignItems="center" mb={5}>
+        {/* Carousel */}
+        <Box
+          sx={{
+            width: { xs: "100%", md: "100%" },
+            height: 400,
+            overflow: "hidden",
+            borderRadius: 2,
+            mr: { md: 3 },
+          }}
+        >
+          <img
+            src={images[currentImage]}
+            alt={`slide-${currentImage}`}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              borderRadius: "8px",
+              transition: "all 1s ease-in-out",
+            }}
+          />
         </Box>
+
+  {/* Heading + Description */}
+      <Box mt={{ xs: 3, md: 0 }}>
+        <Typography
+          variant="h4"
+          fontWeight={1000}
+          fontSize={60}
+          color="primary"
+          sx={{ letterSpacing: 1 }}
+        >
+          RGUKT <br />
+          RK Valley
+        </Typography>
+        <Typography mt={2} color="textSecondary" fontSize={16}>
+          Welcome to RGUKT RK Valley Campus Vinculum, get ready to connect with your peers and grow together...
+        </Typography>
+      </Box>
+    </Box>
 
         {/* Horizontal Scrollable Cards */}
         <Box
@@ -114,6 +162,7 @@ const Dashboard = () => {
         </Box>
       </Box>
     </Box>
+     </>
   );
 };
 
@@ -154,6 +203,7 @@ const DashboardCard = ({ title, icon, items, itemIcon }) => (
       </List>
     </CardContent>
   </Card>
+ 
 );
 
 export default Dashboard;
