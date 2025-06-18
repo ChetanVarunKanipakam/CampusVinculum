@@ -15,7 +15,7 @@ import enrollmentRoutes from './routes/enrollements.routes.js';
 import eventRoutes from './routes/admin.routes.js'; 
 import facultyRoutes from './routes/faculty.routes.js';
 import mentorshipRoutes from './routes/mentorship.routes.js';
-import postRoutes from './routes/posts.routes.js';
+import postRoutes from './routes/post.routes.js';
 import studentRoutes from './routes/students.routes.js';
 import membershipRoutes from './routes/clubMemberships.routes.js';
 import chatbotRoutes from './routes/chatbotQueries.routes.js';
