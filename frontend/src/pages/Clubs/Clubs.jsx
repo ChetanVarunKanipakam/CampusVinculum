@@ -40,12 +40,12 @@ const backgrounds = [
   "https://images.unsplash.com/photo-1555066931-4365d14bab8c", // CodeVerse
   "https://images.unsplash.com/photo-1504384308090-c894fdcc538d", // GlobeTrotters
   "https://images.unsplash.com/photo-1554284126-aa88f22d8b74", // FitNation
-  "https://images.unsplash.com/photo-1498050108023-c5249f4df085", // PixelPioneers ✅ fixed
+  "https://images.unsplash.com/photo-1498050108023-c5249f4df085", // PixelPioneers ✅
   "https://images.unsplash.com/photo-1593642532973-d31b6557fa68", // EcoSphere
-  "https://images.unsplash.com/photo-1507679799987-c73779587ccf", // BizCatalyst ✅ fixed
+  "https://images.unsplash.com/photo-1507679799987-c73779587ccf", // BizCatalyst ✅
   "https://images.unsplash.com/photo-1517602302552-471fe67acf66", // CineSoc
-  "https://images.unsplash.com/photo-1584697964154-b74c3b2f6684", // QuantumQuill ✅ fixed
-  "https://images.unsplash.com/photo-1607746882042-944635dfe10e", // MindScape ✅ fixed
+  "https://images.unsplash.com/photo-1557804506-669a67965ba0", // QuantumQuill ✅
+  "https://images.unsplash.com/photo-1607746882042-944635dfe10e", // MindScape ✅
   "https://images.unsplash.com/photo-1502980426475-b83966705988", // StageStorm
   "https://images.unsplash.com/photo-1511376777868-611b54f68947", // PolyRhythm
   "https://images.unsplash.com/photo-1473625247510-8ceb1760943f" // TravelTales
@@ -176,7 +176,7 @@ const Clubs = () => {
                       <ClubCard
                         club={club}
                         icon={icons[index % icons.length]}
-                        background={backgrounds[index % backgrounds.length]}
+                        background={backgrounds[index]}
                         onClick={() => navigate(`/clubs/${club.name}`)}
                       />
                     </Grid>
