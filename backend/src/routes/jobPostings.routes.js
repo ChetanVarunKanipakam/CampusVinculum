@@ -5,7 +5,7 @@ import {
   createJobPosting,
   deletePosting,
   updateJobPosting
-} from '../controllers/jobPostingController.js'; 
+} from '../controllers/jobController.js'; 
 
 import express from 'express';
 const router = express.Router();

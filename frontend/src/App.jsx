@@ -14,6 +14,9 @@ import Events from './pages/Events/Events.jsx';
 import Schedules from './pages/Schedules/Schedules.jsx';
 import Jobs from './pages/Jobs/Jobs.jsx';
 import LiveSessions from './pages/LiveSessions/LiveSessions.jsx';
+import Notification from './common/Notification/Notification.jsx';
+import ClubDetails from './pages/ClubDetails/ClubDetails.jsx';
+import EventDetails from './pages/EventDetials/EventDetials.jsx';
 
 function App() {
   const [auth, setAuth] = useState(null);
@@ -28,6 +31,7 @@ function App() {
   return  <>
       {/* <BrowserRouter> */}
       <Navbar/>
+      
       <Routes>
         {auth ? (
           <>
@@ -40,6 +44,9 @@ function App() {
             <Route path="/schedules" element={<Schedules />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/notifications" element={<Notification />} />
+            <Route path="/clubs/:clubName" element={<ClubDetails />} />
+            <Route path="/events/:eventName" element={<EventDetails />} />
             <Route
               path="/"
               element={<Dashboard/>}

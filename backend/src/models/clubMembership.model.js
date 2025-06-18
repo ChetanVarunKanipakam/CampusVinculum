@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const clubMembershipSchema = new mongoose.Schema({
   clubID: { type: mongoose.Schema.Types.ObjectId, ref: 'Club' },
   userID: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  role: { type: String, enum: ['Member', 'StudentCoordinator','FacultyCorordinator'] },
+  role: { type: String, enum: ['Member', 'StudentCoordinator','FacultyCoordinator'] },
   joinDate: Date
 });
 

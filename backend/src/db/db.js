@@ -8,7 +8,7 @@ const connectDB = async () => {
     const dbName = process.env.DB_NAME;
 
     if (!mongoURI) throw new Error('MONGO_URI is undefined');
-
+    console.log(mongoURI+dbName);
     await mongoose.connect(mongoURI, {
       dbName: dbName,
     });
