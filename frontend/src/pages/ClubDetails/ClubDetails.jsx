@@ -1,144 +1,61 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import {
-  Box,
-  Typography,
-  Button,
-  Card,
-  CardContent,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  TextField,
-  DialogActions,
-  useTheme,
-} from "@mui/material";
-import { IoArrowBack } from "react-icons/io5";
+import { Box, Toolbar, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
+import ClubHeader from "../../components/ClubDetails/ClubHeader";
+import ClubSidebar from "../../components/ClubDetails/ClubSidebar";
+import DiscussionPanel from "../../components/ClubDetails/DiscussionPanel";
+import EventGrid from "../../components/ClubDetails/EventGrid";
+import ClubMembersDialog from "../../components/ClubDetails/ClubMembersDialog";
+
 
 const mockClubData = {
   "A Club": {
     description: "For coding, hackathons and tech events",
-    events: ["Hackathon 2025", "Tech Quiz"],
-    members: ["Chetan", "Vennela"],
-  },
-  "B Club": {
-    description: "Music, Dance, and Arts Performances",
-    events: ["Battle of Bands", "Dance Showdown"],
-    members: ["Varun", "Harsha"],
-  },
-  "C Club": {
-    description: "Debates, Elocutions, and Book Readings",
-    events: ["Debate Night", "Open Mic"],
-    members: ["Suneetha mam"],
+    events: [
+      { title: "Hackathon 2025", description: "Annual coding competition", date: "2025-07-10" },
+      { title: "Tech Quiz", description: "Tech Trivia Challenge", date: "2025-08-05" },
+    ],
+    members: ["Chetan", "Vennela", "Varun"],
   },
 };
 
 const ClubDetails = () => {
   const { clubName } = useParams();
-  const navigate = useNavigate();
-  const theme = useTheme();
-
-  const club = mockClubData[clubName];
-
-  // Modal States
-  const [openEventModal, setOpenEventModal] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("discussions");
   const [openMemberModal, setOpenMemberModal] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([
+    { sender: "Chetan", text: "Are we ready for the Hackathon?", align: "left" },
+    { sender: "Vennela", text: "Yes! Let’s finalize the ideas.", align: "right" },
+  ]);
+  console.log(clubName);
+  const club = mockClubData[clubName] || null;
+  if (!club) return <Typography paddingTop={10} variant="h4" color="error">Club not found!</Typography>;
 
-  if (!club) {
-    return (
-      <Box p={4}>
-        <Typography variant="h4" color="error">
-          Club not found!
-        </Typography>
-      </Box>
-    );
-  }
+  const handleSendMessage = () => {
+    if (message.trim()) {
+      setMessages([...messages, { sender: "You", text: message, align: "right" }]);
+      setMessage("");
+    }
+  };
 
   return (
-    <Box p={5} sx={{ bgcolor: "#f9fafe", minHeight: "100vh" }}>
-      <Button
-        onClick={() => navigate(-1)}
-        startIcon={<IoArrowBack />}
-        sx={{ mb: 3 }}
-        variant="outlined"
-      >
-        Back
-      </Button>
-
-      <Typography variant="h3" fontWeight={700} color="primary" mb={1}>
-        {clubName}
-      </Typography>
-      <Typography variant="body1" color="text.secondary" mb={4}>
-        {club.description}
-      </Typography>
-
-      {/* Events */}
-      <Card sx={{ mb: 4, backgroundColor: "#fff", borderRadius: 3 }}>
-        <CardContent>
-          <Typography variant="h5" fontWeight={600} color="primary" mb={2}>
-            Upcoming Events
-          </Typography>
-          {club.events.map((event, i) => (
-            <Typography key={i} variant="body1" color="text.secondary" gutterBottom>
-              • {event}
-            </Typography>
-          ))}
-        </CardContent>
-      </Card>
-
-      {/* Members */}
-      <Card sx={{ mb: 4, backgroundColor: "#fff", borderRadius: 3 }}>
-        <CardContent>
-          <Typography variant="h5" fontWeight={600} color="primary" mb={2}>
-            Active Members
-          </Typography>
-          {club.members.map((member, i) => (
-            <Typography key={i} variant="body1" color="text.secondary" gutterBottom>
-              • {member}
-            </Typography>
-          ))}
-        </CardContent>
-      </Card>
-
-      {/* Admin Controls */}
-      <Box mt={3} display="flex" gap={2}>
-        <Button variant="contained" color="primary" onClick={() => setOpenEventModal(true)}>
-          Add Event
-        </Button>
-        <Button variant="contained" color="secondary" onClick={() => setOpenMemberModal(true)}>
-          Add Member
-        </Button>
-        <Button variant="outlined" color="error">
-          Remove Member
-        </Button>
+    <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+      <ClubSidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+      <Box component="main" sx={{ flexGrow: 1, bgcolor: "#f9fafe", position: "relative", mt: 10 }}>
+        <ClubHeader clubName={clubName} onOpenMembers={() => setOpenMemberModal(true)} />
+        <Toolbar />
+        {selectedTab === "discussions" && (
+          <DiscussionPanel
+            messages={messages}
+            message={message}
+            setMessage={setMessage}
+            handleSendMessage={handleSendMessage}
+          />
+        )}
+        {selectedTab === "events" && <EventGrid events={club.events} />}
+        <ClubMembersDialog open={openMemberModal} onClose={() => setOpenMemberModal(false)} members={club.members} />
       </Box>
-
-      {/* Add Event Modal */}
-      <Dialog open={openEventModal} onClose={() => setOpenEventModal(false)}>
-        <DialogTitle>Add New Event</DialogTitle>
-        <DialogContent>
-          <TextField fullWidth margin="normal" label="Event Name" />
-          <TextField fullWidth margin="normal" label="Date" type="date" InputLabelProps={{ shrink: true }} />
-          <TextField fullWidth margin="normal" label="Description" multiline rows={3} />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenEventModal(false)}>Cancel</Button>
-          <Button variant="contained">Save</Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Add Member Modal */}
-      <Dialog open={openMemberModal} onClose={() => setOpenMemberModal(false)}>
-        <DialogTitle>Add New Member</DialogTitle>
-        <DialogContent>
-          <TextField fullWidth margin="normal" label="Member Name" />
-          <TextField fullWidth margin="normal" label="Email ID" />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenMemberModal(false)}>Cancel</Button>
-          <Button variant="contained">Add</Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 };

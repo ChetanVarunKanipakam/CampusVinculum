@@ -20,9 +20,9 @@ import studentRoutes from './routes/students.routes.js';
 import membershipRoutes from './routes/clubMemberships.routes.js';
 import chatbotRoutes from './routes/chatbotQueries.routes.js';
 import jobRoutes from './routes/jobPostings.routes.js';
+import {server , app} from './utils/socket.js';
 
 
-const app=express();
 app.use(cors({
   origin: "http://localhost:5173", 
   credentials: true             
@@ -52,5 +52,5 @@ app.use('/api/jobPostings', jobRoutes);
 
 
 connectDB()
-.then(()=>app.listen(process.env.PORT,()=>console.log("helloworld")))
+.then(()=>server.listen(process.env.PORT,()=>console.log("helloworld")))
 .catch(()=> console.log('internal server error'));

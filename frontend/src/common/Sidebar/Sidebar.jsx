@@ -40,7 +40,7 @@ const SidebarMenu = () => {
   return (
   <>
     {/* Desktop Sidebar */}
-    <div className="hidden lg:inline-block w-2/12 h-screen shadow-2xl background_gradient_color fixed left-0 top-4 overflow-y-auto">
+    <div className="hidden lg:inline-block w-2/12 h-screen shadow-2xl background_gradient_color fixed left-0 top-4 bottom-10 overflow-y-auto">
       <div className="w-full h-full flex flex-col justify-start gap-y-5 items-center p-4">
         {/* User Profile Section */}
         <div className="w-full flex flex-col items-center">

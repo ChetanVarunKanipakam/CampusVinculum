@@ -24,13 +24,81 @@ const Chatbot = () => {
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef(null);
 
-  const formatResponse = (text) => {
-    return text
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold
-      .replace(/\n/g, "<br />")                          // New lines
-      .replace(/\* (.*?)\n/g, "<li>$1</li>")             // Bullet points
-      .replace(/(#+) (.*?)\n/g, "<h3>$2</h3>");          // Headings (optional)
-  };
+  function formatSocketText(rawText) {
+      const lines = rawText.trim().split('\n');
+      const formattedLines = [];
+      let inCodeBlock = false;
+
+      for (let rawLine of lines) {
+        let line = rawLine.trimEnd();
+
+        // Headings (e.g., Part 1, Part 2)
+        if (/^\s*\*\*Part \d+:.*\*\*/.test(line)) {
+          line = line.replace(/\*\*(Part \d+:.*?)\*\*/, '## 🚀 $1');
+          formattedLines.push(line);
+          continue;
+        }
+
+        // Subsections (e.g., **TCP**, **UDP**)
+        if (/^\s*\*\*.*\*\*$/.test(line)) {
+          line = line.replace(/\*\*(.*?)\*\*/, '### 🔹 $1');
+          formattedLines.push(line);
+          continue;
+        }
+
+        // Bullet points
+        if (line.trim().startsWith("* ")) {
+          line = "- " + line.trim().slice(2);
+          formattedLines.push(line);
+          continue;
+        }
+
+        // Indented bullet points (nested)
+        if (/^\s*\*/.test(line)) {
+          const indent = line.length - line.trimStart().length;
+          const dashCount = Math.floor(indent / 2);
+          line = '-'.repeat(dashCount + 1) + ' ' + line.trim().slice(1).trim();
+          formattedLines.push(line);
+          continue;
+        }
+
+        // Port numbers with colons (e.g., * 8080: HTTP)
+        if (/^\s*\*\s*\d{2,5}:/.test(line)) {
+          const parts = line.trim().split(':');
+          formattedLines.push(`| \`${parts[0].replace('*', '').trim()}\` | ${parts[1].trim()} |`);
+          continue;
+        }
+
+        // Code-like lines
+        if (/^\s*(socket|bind|send|recv|connect|accept)\(/.test(line)) {
+          if (!inCodeBlock) {
+            formattedLines.push("```c");
+            inCodeBlock = true;
+          }
+          formattedLines.push(line.trim());
+          continue;
+        }
+
+        // End code block on empty line
+        if (inCodeBlock && line === "") {
+          formattedLines.push("```");
+          inCodeBlock = false;
+          continue;
+        }
+
+        // Otherwise
+        formattedLines.push(line);
+      }
+
+      // Final cleanup
+      if (inCodeBlock) {
+        formattedLines.push("```");
+      }
+
+      return formattedLines.join('\n');
+    }
+
+
   const sendPrompt = async () => {
     if (!prompt.trim()) return;
 
@@ -41,11 +109,11 @@ const Chatbot = () => {
     try {
       const response = await axios.post(apiRoutes.chatbotURI, { query: prompt });
 
-      const data =response.data;
-      console.log(response.data);
+      const data =formatSocketText(response.data.responseText);
+      console.log(data);
       const botReply = {
         type: "bot",
-        text: data.responseText || "No response."
+        text: data || "No response."
       };
 
       setMessages((prev) => [...prev, botReply]);

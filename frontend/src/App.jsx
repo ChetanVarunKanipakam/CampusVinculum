@@ -17,6 +17,7 @@ import LiveSessions from './pages/LiveSessions/LiveSessions.jsx';
 import Notification from './common/Notification/Notification.jsx';
 import ClubDetails from './pages/ClubDetails/ClubDetails.jsx';
 import EventDetails from './pages/EventDetials/EventDetials.jsx';
+import Discussions from './pages/Discussions/Discussions.jsx';
 
 function App() {
   const [auth, setAuth] = useState(null);
@@ -47,6 +48,7 @@ function App() {
             <Route path="/notifications" element={<Notification />} />
             <Route path="/clubs/:clubName" element={<ClubDetails />} />
             <Route path="/events/:eventName" element={<EventDetails />} />
+            <Route path="/discussions" element={<Discussions/>} />
             <Route
               path="/"
               element={<Dashboard/>}

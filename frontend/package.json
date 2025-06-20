@@ -40,6 +40,7 @@
     "react-toastify": "^10.0.5",
     "react-use-clipboard": "^1.0.9",
     "regenerator-runtime": "^0.14.1",
+    "socket.io-client": "^4.8.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss": "^4.1.10",
     "tailwindcss-animate": "^1.0.7"

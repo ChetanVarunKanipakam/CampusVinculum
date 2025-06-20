@@ -18,8 +18,6 @@ export const addQuery = async (req, res) => {
     });
 
     const savedchatbot = await chatbot.save();
-
-    console.log("Saved chatbot response:", savedchatbot);
     res.status(200).json(savedchatbot);
   } catch (error) {
     console.error("Chatbot error:", error);
