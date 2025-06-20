@@ -891,3 +891,1098 @@ const Clubs = () => {
 };
 
 export default Clubs;
+
+
+
+
+
+
+events.js
+
+import React from "react";
+import SidebarMenu from "../../common/sidebar/Sidebar";
+import {
+  Box,
+  Typography,
+  Card,
+  CardMedia,
+  CardContent,
+  Avatar,
+  useTheme,
+} from "@mui/material";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
+import rgukt from "@/assets/rgukt.jpg";
+import NotificationButton from "../../common/NotificationButton/NotificationButton";
+import { useNavigate } from "react-router-dom"; // Add this at top
+
+
+   // Initialize navigate
+
+  
+
+const Events = () =>{
+
+    const navigate = useNavigate();
+     const Events = [
+    {
+      name: "Event1",
+      description: "Tech event for all CSE students",
+      details:
+        "This is a technical gathering with talks on AI, ML, and competitive programming.",
+    },
+    {
+      name: "Event2",
+      description: "Farewell send-off to R19 batch",
+      details:
+        "R19 batch farewell with speeches, performances, and photo sessions.",
+    },
+    {
+      name: "Event3",
+      description: "Abhiyanth cultural and tech fest of RGUKT RK Valley",
+      details:
+        "A 3-day celebration with cultural programs, workshops, exhibitions, and competitions.",
+    },
+  ];
+
+
+    return (
+        <>
+    <NotificationButton/>
+        <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+      <Box sx={{ width: 240, bgcolor: "#f5f5f5", height: "100vh", flexShrink: 0 }}>
+        <SidebarMenu />
+      </Box>
+
+      {/* Main Content */}
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 5,
+          overflowY: "auto",
+          bgcolor: "#f3f4f6",
+        }}
+      >
+        <Typography
+          variant="h4"
+          color="primary"
+          fontWeight={700}
+          textAlign="center"
+          mb={4}
+          sx={{ letterSpacing: 1 }}
+        >
+          Events
+        </Typography>
+
+        {/* Scrollable Card Row */}
+        <Box
+          sx={{
+            display: "flex",
+            gap: 3,
+            overflowX: "auto",
+            scrollSnapType: "x mandatory",
+            px: 1,
+            pb: 3,
+            pt: 3,
+            "&::-webkit-scrollbar": {
+              height: 8,
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#ccc",
+              borderRadius: 4,
+            },
+          }}
+        >
+            {Events.map((event, index) => (
+  <Box
+    key={index}
+    onClick={() => navigate(`/events/${event.name}`)}
+    sx={{ cursor: "pointer" }}
+  >
+    <Card
+      elevation={5}
+      sx={{
+        minWidth: 300,
+        maxWidth: 320,
+        borderRadius: 4,
+        flexShrink: 0,
+        scrollSnapAlign: "start",
+        background: "rgba(255, 255, 255, 0.75)",
+        backdropFilter: "blur(10px)",
+        boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        "&:hover": {
+          transform: "translateY(-6px)",
+          boxShadow: "0 12px 24px rgba(0,0,0,0.2)",
+        },
+      }}
+    >
+      <CardMedia sx={{ height: 140 }} image={rgukt} title={event.name} />
+      <CardContent>
+        <Box display="flex" alignItems="center" mb={2}>
+          <Avatar
+            sx={{
+              bgcolor: "primary.main",
+              background: "linear-gradient(135deg, #4f46e5, #3b82f6)",
+              color: "#fff",
+              width: 48,
+              height: 48,
+            }}
+          >
+            <GroupWorkIcon />
+          </Avatar>
+          <Typography variant="h6" fontWeight={600} ml={2}>
+            {event.name}
+          </Typography>
+                </Box>
+                    <Typography variant="body2" color="text.secondary">
+                    {event.description}
+                    </Typography>
+                </CardContent>
+                </Card>
+            </Box>
+            ))}
+
+        </Box>
+      </Box>
+    </Box>
+    </>
+    );
+}
+
+export default Events;
+
+
+
+
+
+
+
+import React, { useState } from "react";
+import {
+  Box,
+  Tabs,
+  Tab,
+  Card,
+  CardContent,
+  Typography,
+  Chip,
+  Grid,
+  Avatar,
+  Container,
+} from "@mui/material";
+import LiveTvIcon from "@mui/icons-material/LiveTv";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import DoneIcon from "@mui/icons-material/Done";
+import UpcomingIcon from "@mui/icons-material/Update";
+import SidebarMenu from "../../common/sidebar/Sidebar";
+import NotificationButton from "../../common/NotificationButton/NotificationButton";
+
+const sessions = [
+  {
+    title: "AI & ML Bootcamp",
+    status: "upcoming",
+    speaker: "Dr. Vamsi Krishna",
+    date: "2025-06-25",
+    time: "10:00 AM",
+  },
+  {
+    title: "Data Structures Masterclass",
+    status: "live",
+    speaker: "Ms. Kavya Rao",
+    date: "Today",
+    time: "11:00 AM",
+  },
+  {
+    title: "Career in Cybersecurity",
+    status: "completed",
+    speaker: "Mr. Rahul Verma",
+    date: "2025-06-10",
+    time: "4:00 PM",
+  },
+  {
+    title: "Frontend Dev Crash Course",
+    status: "completed",
+    speaker: "Srujana Sharma",
+    date: "2025-06-09",
+    time: "3:30 PM",
+  },
+];
+
+const LiveSessions = () => {
+  const [selectedTab, setSelectedTab] = useState("live");
+
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "live":
+        return "error";
+      case "upcoming":
+        return "primary";
+      case "completed":
+        return "success";
+      default:
+        return "default";
+    }
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "live":
+        return <LiveTvIcon fontSize="small" />;
+      case "upcoming":
+        return <UpcomingIcon fontSize="small" />;
+      case "completed":
+        return <DoneIcon fontSize="small" />;
+      default:
+        return <AccessTimeIcon fontSize="small" />;
+    }
+  };
+
+  const filteredSessions = sessions.filter(
+    (session) => session.status === selectedTab
+  );
+
+  return (
+    <>
+    <NotificationButton/>
+    <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#f5f7fa" }}>
+      {/* Sidebar */}
+      <Box sx={{ width: 240, bgcolor: "#f5f5f5", height: "100vh", flexShrink: 0 }}>
+        <SidebarMenu />
+      </Box>
+
+      {/* Main Content */}
+      <Box component="main" sx={{ flexGrow: 1, py: 4, px: { xs: 2, sm: 4 } ,mt: 5}}>
+        <Container maxWidth="lg">
+          <Typography variant="h4" fontWeight={700} mb={3} color="primary" textAlign="center">
+            Live Sessions
+          </Typography>
+
+          {/* Filter Tabs */}
+          <Tabs
+            value={selectedTab}
+            onChange={handleTabChange}
+            textColor="primary"
+            indicatorColor="primary"
+            centered
+            sx={{ mb: 4 }}
+          >
+            <Tab label="Live" value="live" />
+            <Tab label="Upcoming" value="upcoming" />
+            <Tab label="Completed" value="completed" />
+          </Tabs>
+
+          {/* Cards */}
+          <Grid container spacing={3}>
+            {filteredSessions.length > 0 ? (
+              filteredSessions.map((session, idx) => (
+                <Grid item xs={12} sm={6} md={4} key={idx}>
+                  <Card
+                    elevation={4}
+                    sx={{
+                      borderRadius: 3,
+                      background: "#ffffff",
+                      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                      "&:hover": {
+                        transform: "translateY(-5px)",
+                        boxShadow: 6,
+                      },
+                    }}
+                  >
+                    <CardContent>
+                      <Box display="flex" justifyContent="space-between" alignItems="center">
+                        <Typography variant="h6" fontWeight={600}>
+                          {session.title}
+                        </Typography>
+                        <Chip
+                          label={session.status.toUpperCase()}
+                          color={getStatusColor(session.status)}
+                          icon={getStatusIcon(session.status)}
+                          size="small"
+                        />
+                      </Box>
+
+                      <Typography variant="body2" color="textSecondary" mt={1}>
+                        <strong>Date:</strong> {session.date}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        <strong>Time:</strong> {session.time}
+                      </Typography>
+
+                      <Box display="flex" alignItems="center" mt={2}>
+                        <Avatar sx={{ width: 32, height: 32, mr: 1 }} />
+                        <Typography variant="body2">
+                          <strong>Speaker:</strong> {session.speaker}
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))
+            ) : (
+              <Grid item xs={12}>
+                <Typography variant="body1" color="textSecondary">
+                  No sessions available in this category.
+                </Typography>
+              </Grid>
+            )}
+          </Grid>
+        </Container>
+      </Box>
+    </Box>
+  </>
+  );
+};
+
+export default LiveSessions;
+
+
+
+
+
+
+
+
+
+import React, { useState } from "react";
+import {
+  Box,
+  Tabs,
+  Tab,
+  Card,
+  CardContent,
+  Typography,
+  Chip,
+  Grid,
+  Avatar,
+  Container,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Divider,
+} from "@mui/material";
+import LiveTvIcon from "@mui/icons-material/LiveTv";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import DoneIcon from "@mui/icons-material/Done";
+import UpcomingIcon from "@mui/icons-material/Update";
+import SidebarMenu from "../../common/sidebar/Sidebar";
+import NotificationButton from "../../common/NotificationButton/NotificationButton";
+
+const sessions = [
+  // LIVE Sessions
+  {
+    title: "Data Structures Masterclass",
+    status: "live",
+    speaker: "Ms. Kavya Rao",
+    date: "Today",
+    time: "11:00 AM",
+  },
+  {
+    title: "Machine Learning with Python",
+    status: "live",
+    speaker: "Mr. Arvind Iyer",
+    date: "Today",
+    time: "12:00 PM",
+  },
+  {
+    title: "Deep Learning with TensorFlow",
+    status: "live",
+    speaker: "Dr. Meenal Agarwal",
+    date: "Today",
+    time: "2:00 PM",
+  },
+  {
+    title: "Kubernetes for Developers",
+    status: "live",
+    speaker: "Mr. Sameer Shaikh",
+    date: "Today",
+    time: "3:30 PM",
+  },
+  {
+    title: "Real-time Chat App with Socket.io",
+    status: "live",
+    speaker: "Ms. Rachana Deshmukh",
+    date: "Today",
+    time: "5:00 PM",
+  },
+
+  // UPCOMING Sessions
+  {
+    title: "AI & ML Bootcamp",
+    status: "upcoming",
+    speaker: "Dr. Vamsi Krishna",
+    date: "2025-06-25",
+    time: "10:00 AM",
+  },
+  {
+    title: "Introduction to Data Science",
+    status: "upcoming",
+    speaker: "Dr. Sneha Kapoor",
+    date: "2025-07-01",
+    time: "2:00 PM",
+  },
+  {
+    title: "Advanced React Workshop",
+    status: "upcoming",
+    speaker: "Ms. Tanya Singh",
+    date: "2025-06-30",
+    time: "5:00 PM",
+  },
+  {
+    title: "Blockchain for Beginners",
+    status: "upcoming",
+    speaker: "Dr. Akash Rathi",
+    date: "2025-07-03",
+    time: "11:30 AM",
+  },
+  {
+    title: "DevOps Essentials",
+    status: "upcoming",
+    speaker: "Mr. Varun Mehta",
+    date: "2025-07-04",
+    time: "3:00 PM",
+  },
+  {
+    title: "Design Thinking Workshop",
+    status: "upcoming",
+    speaker: "Ms. Ananya Raj",
+    date: "2025-07-05",
+    time: "1:00 PM",
+  },
+
+  // COMPLETED Sessions
+  {
+    title: "Career in Cybersecurity",
+    status: "completed",
+    speaker: "Mr. Rahul Verma",
+    date: "2025-06-10",
+    time: "4:00 PM",
+  },
+  {
+    title: "Frontend Dev Crash Course",
+    status: "completed",
+    speaker: "Srujana Sharma",
+    date: "2025-06-09",
+    time: "3:30 PM",
+  },
+];
+
+const LiveSessions = () => {
+  const [selectedTab, setSelectedTab] = useState("live");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [activeSession, setActiveSession] = useState(null);
+
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
+
+  const openSessionDetails = (session) => {
+    setActiveSession(session);
+    setOpenDialog(true);
+  };
+
+  const closeDialog = () => {
+    setOpenDialog(false);
+    setActiveSession(null);
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "live":
+        return "error";
+      case "upcoming":
+        return "primary";
+      case "completed":
+        return "success";
+      default:
+        return "default";
+    }
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "live":
+        return <LiveTvIcon fontSize="small" />;
+      case "upcoming":
+        return <UpcomingIcon fontSize="small" />;
+      case "completed":
+        return <DoneIcon fontSize="small" />;
+      default:
+        return <AccessTimeIcon fontSize="small" />;
+    }
+  };
+
+  const filteredSessions = sessions.filter(
+    (session) => session.status === selectedTab
+  );
+
+  return (
+    <>
+      <NotificationButton />
+      <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#f5f7fa" }}>
+        <Box sx={{ width: 240, bgcolor: "#f5f5f5", height: "100vh", flexShrink: 0 }}>
+          <SidebarMenu />
+        </Box>
+
+        <Box component="main" sx={{ flexGrow: 1, py: 4, px: { xs: 2, sm: 4 }, mt: 5 }}>
+          <Container maxWidth="lg">
+            <Typography variant="h4" fontWeight={700} mb={3} color="primary" textAlign="center">
+              Live Sessions
+            </Typography>
+
+            <Tabs
+              value={selectedTab}
+              onChange={handleTabChange}
+              textColor="primary"
+              indicatorColor="primary"
+              centered
+              sx={{ mb: 4 }}
+            >
+              <Tab label="Live" value="live" />
+              <Tab label="Upcoming" value="upcoming" />
+              <Tab label="Completed" value="completed" />
+            </Tabs>
+
+            <Grid container spacing={3}>
+              {filteredSessions.length > 0 ? (
+                filteredSessions.map((session, idx) => (
+                  <Grid item xs={12} sm={6} md={4} key={idx}>
+                    <Card
+                      elevation={4}
+                      sx={{
+                        borderRadius: 3,
+                        height: "100%",
+                        transition: "transform 0.3s ease",
+                        "&:hover": { transform: "translateY(-5px)" },
+                      }}
+                    >
+                      <CardContent>
+                        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                          <Typography variant="subtitle1" fontWeight={600}>{session.title}</Typography>
+                          <Chip
+                            label={session.status.toUpperCase()}
+                            color={getStatusColor(session.status)}
+                            icon={getStatusIcon(session.status)}
+                            size="small"
+                          />
+                        </Box>
+
+                        <Divider sx={{ mb: 1 }} />
+
+                        <Typography variant="body2" color="text.secondary">📅 <strong>Date:</strong> {session.date}</Typography>
+                        <Typography variant="body2" color="text.secondary">⏰ <strong>Time:</strong> {session.time}</Typography>
+
+                        <Box display="flex" alignItems="center" mt={2}>
+                          <Avatar sx={{ width: 32, height: 32, mr: 1, bgcolor: "primary.main" }} />
+                          <Typography variant="body2">🎤 <strong>Speaker:</strong> {session.speaker}</Typography>
+                        </Box>
+
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          sx={{ mt: 2, borderRadius: 2, textTransform: "none" }}
+                          onClick={() => openSessionDetails(session)}
+                        >
+                          {session.status === "live" ? "Join Now" : "View Details"}
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))
+              ) : (
+                <Grid item xs={12}>
+                  <Typography variant="body1" color="textSecondary" textAlign="center">
+                    No sessions available in this category.
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
+          </Container>
+        </Box>
+      </Box>
+
+      <Dialog open={openDialog} onClose={closeDialog} fullWidth maxWidth="sm">
+        <DialogTitle>{activeSession?.title}</DialogTitle>
+        <DialogContent dividers>
+          <Typography variant="subtitle1" gutterBottom>
+            <strong>Status:</strong> {activeSession?.status.toUpperCase()}
+          </Typography>
+          <Typography variant="body2">
+            <strong>Speaker:</strong> {activeSession?.speaker}
+          </Typography>
+          <Typography variant="body2">
+            <strong>Date:</strong> {activeSession?.date}
+          </Typography>
+          <Typography variant="body2">
+            <strong>Time:</strong> {activeSession?.time}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDialog} color="primary">
+            Close
+          </Button>
+          {activeSession?.status === "live" && (
+            <Button variant="contained" color="error">
+              Join Session
+            </Button>
+          )}
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+};
+
+export default LiveSessions;
+
+
+Schedule
+// pages/Schedules/Schedules.jsx
+import React, { useState } from "react";
+import { Box, Tabs, Tab, Typography, useTheme } from "@mui/material";
+import SidebarMenu from "../../common/sidebar/Sidebar";
+import NotificationButton from "../../common/NotificationButton/NotificationButton";
+import ExamSchedule from "./ExamSchedule.jsx";
+import Timetable from "./TimetableSchedule.jsx";
+
+const Schedules = () => {
+  const [value, setValue] = useState(0);
+  const theme = useTheme();
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+    <>
+      <NotificationButton />
+      <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+        <Box sx={{ width: 240, bgcolor: "#f5f5f5", height: "100vh", flexShrink: 0 }}>
+          <SidebarMenu />
+        </Box>
+
+        <Box
+          sx={{
+            flexGrow: 1,
+            p: 4,
+            overflowY: "auto",
+            bgcolor: "f0f0fa",
+          }}
+        >
+          <Typography variant="h4" color="primary" fontWeight={700} my={4}>
+            My Schedules
+          </Typography>
+
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            textColor="primary"
+            indicatorColor="primary"
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{
+              background: "#ffffffaa",
+              backdropFilter: "blur(6px)",
+              borderRadius: 2,
+              mb: 3,
+            }}
+          >
+            <Tab label="Exam Schedule" />
+            <Tab label="Timetable" />
+          </Tabs>
+
+          {value === 0 && <ExamSchedule />}
+          {value === 1 && <Timetable />}
+        </Box>
+      </Box>
+    </>
+  );
+};
+
+export default Schedules;
+
+
+
+exam Schedule// pages/Schedules/ExamSchedule.jsx
+
+import React from "react";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Divider,
+  Grid,
+} from "@mui/material";
+import SchoolIcon from "@mui/icons-material/School";
+import EventIcon from "@mui/icons-material/Event";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import PlaceIcon from "@mui/icons-material/Place";
+
+// Exam data grouped by type
+const examSchedule = {
+  "Mid-Terms": [
+    {
+      subject: "Mathematics",
+      date: "2025-07-10",
+      time: "10:00 AM - 12:00 PM",
+      venue: "Hall A",
+    },
+    {
+      subject: "Physics",
+      date: "2025-07-12",
+      time: "02:00 PM - 04:00 PM",
+      venue: "Hall B",
+    },
+  ],
+  "Semester Exams": [
+    {
+      subject: "Chemistry",
+      date: "2025-07-25",
+      time: "09:00 AM - 12:00 PM",
+      venue: "Main Auditorium",
+    },
+    {
+      subject: "English",
+      date: "2025-07-28",
+      time: "01:00 PM - 04:00 PM",
+      venue: "Hall C",
+    },
+  ],
+};
+
+const formatDate = (dateStr) =>
+  new Intl.DateTimeFormat("en-IN", {
+    dateStyle: "long",
+  }).format(new Date(dateStr));
+
+const ExamSchedule = () => (
+  <Box p={5}>
+    {Object.entries(examSchedule).map(([examType, exams], index) => (
+      <Box key={index} mb={5}>
+        <Typography
+          variant="h4"
+          fontWeight={700}
+          color="primary"
+          gutterBottom
+          sx={{
+            textAlign: "center",
+            letterSpacing: 1,
+            mb: 3,
+          }}
+        >
+          {examType}
+        </Typography>
+
+        <Grid container spacing={3} justifyContent="center">
+          {exams.map((exam, i) => (
+            <Grid item key={i}>
+              <Card
+                sx={{
+                  minWidth: 300,
+                  maxWidth: 360,
+                  borderRadius: 4,
+                  background: "rgba(255,255,255,0.75)",
+                  backdropFilter: "blur(12px)",
+                  boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+                  transition: "transform 0.3s ease",
+                  "&:hover": {
+                    transform: "translateY(-6px)",
+                    boxShadow: "0 12px 24px rgba(0,0,0,0.2)",
+                  },
+                }}
+              >
+                <CardContent>
+                  <Box display="flex" alignItems="center" mb={1}>
+                    <SchoolIcon color="primary" />
+                    <Typography
+                      variant="h6"
+                      fontWeight={600}
+                      ml={1.5}
+                      sx={{ whiteSpace: "nowrap" }}
+                    >
+                      {exam.subject}
+                    </Typography>
+                  </Box>
+
+                  <Divider sx={{ mb: 2 }} />
+
+                  <Box display="flex" alignItems="center" mb={1}>
+                    <EventIcon fontSize="small" sx={{ mr: 1 }} />
+                    <Typography variant="body1">
+                      {formatDate(exam.date)}
+                    </Typography>
+                  </Box>
+
+                  <Box display="flex" alignItems="center" mb={1}>
+                    <AccessTimeIcon fontSize="small" sx={{ mr: 1 }} />
+                    <Typography variant="body1">{exam.time}</Typography>
+                  </Box>
+
+                  <Box display="flex" alignItems="center">
+                    <PlaceIcon fontSize="small" sx={{ mr: 1 }} />
+                    <Typography variant="body1">{exam.venue}</Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    ))}
+  </Box>
+);
+
+export default ExamSchedule;
+
+
+// pages/Schedules/Timetable.jsx
+import React from "react";
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from "@mui/material";
+
+const timeSlots = [
+  "09:00 - 10:00",
+  "10:00 - 11:00",
+  "11:15 - 12:15",
+  "01:15 - 02:15",
+  "02:15 - 03:15",
+];
+
+const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+const timetableData = {
+  Monday: ["Maths", "Physics", "Chemistry", "Computer", "English"],
+  Tuesday: ["Physics", "Maths", "English", "Chemistry", "Computer"],
+  Wednesday: ["Chemistry", "English", "Physics", "Computer", "--"],
+  Thursday: ["English", "Chemistry", "Maths", "Physics", "Lab"],
+  Friday: ["Computer", "English", "Computer", "Maths", "Lab"],
+  Saturday: ["--", "--", "Seminar", "--", "--"],
+};
+
+const Timetable = () => {
+  return (
+    <Box>
+      <Typography variant="h5" fontWeight={700} color="primary" my={3}>
+        Weekly Class Timetable
+      </Typography>
+
+      <TableContainer
+        component={Paper}
+        sx={{
+          background: "rgba(255,255,255,0.8)",
+          backdropFilter: "blur(8px)",
+          borderRadius: 4,
+          boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
+        }}
+      >
+        <Table>
+          <TableHead>
+            <TableRow sx={{ background: "linear-gradient(to right, #4f46e5, #3b82f6)" }}>
+              <TableCell sx={{ color: "white", fontWeight: 700 }}>Day / Time</TableCell>
+              {timeSlots.map((slot, index) => (
+                <TableCell key={index} align="center" sx={{ color: "white", fontWeight: 700 }}>
+                  {slot}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {days.map((day, index) => (
+              <TableRow key={index}>
+                <TableCell sx={{ fontWeight: 600, color: "#3f3f3f" }}>{day}</TableCell>
+                {timetableData[day].map((subject, idx) => (
+                  <TableCell
+                    key={idx}
+                    align="center"
+                    sx={{
+                      fontWeight: 500,
+                      color: subject === "--" ? "#999" : "#333",
+                      backgroundColor: subject === "Lab" ? "#e3f2fd" : "inherit",
+                    }}
+                  >
+                    {subject}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
+};
+
+export default Timetable;
+
+
+import React from "react";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
+
+// Time slots and days
+const timeSlots = [
+  "09:00 - 10:00",
+  "10:00 - 11:00",
+  "11:15 - 12:15",
+  "01:15 - 02:15",
+  "02:15 - 03:15",
+];
+
+const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+// Timetable data
+const timetableData = {
+  Monday: ["Maths", "Physics", "Chemistry", "Computer", "English"],
+  Tuesday: ["Physics", "Maths", "English", "Chemistry", "Computer"],
+  Wednesday: ["Chemistry", "English", "Physics", "Computer", "--"],
+  Thursday: ["English", "Chemistry", "Maths", "Physics", "Lab"],
+  Friday: ["Computer", "English", "Computer", "Maths", "Lab"],
+  Saturday: ["--", "--", "Seminar", "--", "--"],
+};
+
+// Subject color mapping
+const subjectColors = {
+  Maths: "#bbdefb",
+  Physics: "#c8e6c9",
+  Chemistry: "#ffe0b2",
+  Computer: "#d1c4e9",
+  English: "#f8bbd0",
+  Lab: "#b2ebf2",
+  Seminar: "#fff9c4",
+};
+
+// Proper style-content separation
+const getStyledCell = (subject) => {
+  const style = {
+    fontWeight: 500,
+    color: subject === "--" ? "#aaa" : "#333",
+    backgroundColor: subjectColors[subject] || "transparent",
+    fontSize: "0.9rem",
+  };
+
+  let content = subject;
+  if (subject === "Lab") content = "🔬 Lab";
+  else if (subject === "Seminar") content = "🎤 Seminar";
+  else if (subject === "--") content = "--";
+
+  return { style, content };
+};
+
+const Timetable = () => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  return (
+    <Box px={isSmallScreen ? 1 : 4} py={4}>
+      <Typography
+        variant={isSmallScreen ? "h6" : "h5"}
+        fontWeight={700}
+        color="primary"
+        mb={3}
+        textAlign="center"
+        letterSpacing={1}
+        sx={{
+          background: "linear-gradient(to right, #4f46e5, #3b82f6)",
+          color: "white",
+          py: 1.5,
+          borderRadius: 2,
+          boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        📚 Weekly Class Timetable
+      </Typography>
+
+      <TableContainer
+        component={Paper}
+        sx={{
+          background: "rgba(255, 255, 255, 0.95)",
+          backdropFilter: "blur(10px)",
+          borderRadius: 4,
+          boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
+          overflowX: "auto",
+        }}
+      >
+        <Table size={isSmallScreen ? "small" : "medium"}>
+          <TableHead>
+            <TableRow sx={{ background: "linear-gradient(to right, #6366f1, #3b82f6)" }}>
+              <TableCell
+                sx={{
+                  color: "white",
+                  fontWeight: 700,
+                  fontSize: isSmallScreen ? "0.75rem" : "1rem",
+                }}
+              >
+                Day / Time
+              </TableCell>
+              {timeSlots.map((slot, index) => (
+                <TableCell
+                  key={index}
+                  align="center"
+                  sx={{
+                    color: "white",
+                    fontWeight: 700,
+                    fontSize: isSmallScreen ? "0.7rem" : "0.95rem",
+                  }}
+                >
+                  {slot}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {days.map((day, i) => (
+              <TableRow key={i}>
+                <TableCell
+                  sx={{
+                    fontWeight: 600,
+                    color: "#374151",
+                    fontSize: isSmallScreen ? "0.75rem" : "0.9rem",
+                  }}
+                >
+                  {day}
+                </TableCell>
+                {timetableData[day].map((subject, idx) => {
+                  const { style, content } = getStyledCell(subject);
+                  return (
+                    <TableCell
+                      key={idx}
+                      align="center"
+                      sx={{
+                        ...style,
+                        border: "1px solid #e0e0e0",
+                        transition: "all 0.3s",
+                        "&:hover": {
+                          backgroundColor: "#e0f2f1",
+                          transform: "scale(1.02)",
+                        },
+                      }}
+                    >
+                      {content}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
+};
+
+export default Timetable;

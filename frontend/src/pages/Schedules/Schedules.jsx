@@ -1,6 +1,15 @@
-// pages/Schedules/Schedules.jsx
 import React, { useState } from "react";
-import { Box, Tabs, Tab, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Tabs,
+  Tab,
+  Typography,
+  Divider,
+  useTheme,
+  useMediaQuery,
+  Paper,
+} from "@mui/material";
+
 import SidebarMenu from "../../common/sidebar/Sidebar";
 import NotificationButton from "../../common/NotificationButton/NotificationButton";
 import ExamSchedule from "./ExamSchedule.jsx";
@@ -9,6 +18,7 @@ import Timetable from "./TimetableSchedule.jsx";
 const Schedules = () => {
   const [value, setValue] = useState(0);
   const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -17,41 +27,113 @@ const Schedules = () => {
   return (
     <>
       <NotificationButton />
-      <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-        <Box sx={{ width: 240, bgcolor: "#f5f5f5", height: "100vh", flexShrink: 0 }}>
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          height: "100vh",
+          overflow: "hidden",
+          bgcolor: "#eef2f7",
+        }}
+      >
+        {/* Sidebar */}
+        <Box
+          sx={{
+            width: { xs: "100%", md: 240 },
+            bgcolor: "#f5f5f5",
+            height: { xs: "auto", md: "100vh" },
+            flexShrink: 0,
+            borderRight: { md: "1px solid #ddd" },
+            boxShadow: { md: "2px 0 6px rgba(0,0,0,0.05)" },
+          }}
+        >
           <SidebarMenu />
         </Box>
 
+        {/* Main Content */}
         <Box
           sx={{
             flexGrow: 1,
-            p: 4,
+            p: { xs: 2, sm: 3, md: 4 },
             overflowY: "auto",
-            bgcolor: "f0f0fa",
+            bgcolor: "#f0f4ff",
+            height: "100vh",
           }}
         >
-          <Typography variant="h4" color="primary" fontWeight={700} my={4}>
-            My Schedules
-          </Typography>
-
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            textColor="primary"
-            indicatorColor="primary"
-            variant="scrollable"
-            scrollButtons="auto"
+          {/* Title Section */}
+          <Typography
+            variant={isSmallScreen ? "h6" : "h5"}
+            fontWeight={700}
+            mb={2}
+            textAlign="center"
             sx={{
-              background: "#ffffffaa",
-              backdropFilter: "blur(6px)",
+              background: "linear-gradient(to right, #a1c4fd, #ff9a9e)", // aqua to pink
+              color: "white",
+              py: 1.2,
               borderRadius: 2,
-              mb: 3,
+              boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.08)",
             }}
           >
-            <Tab label="Exam Schedule" />
-            <Tab label="Timetable" />
-          </Tabs>
+            📅 My Schedules
+          </Typography>
 
+          {/* Description Box */}
+          <Box
+            sx={{
+              textAlign: "center",
+              background: "#ffffffaa",
+              px: 2,
+              py: 1,
+              borderRadius: 2,
+              mb: 3,
+              color: "#444",
+              fontSize: "0.95rem",
+              fontStyle: "italic",
+              backdropFilter: "blur(5px)",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+            }}
+          >
+            View your mid-semester exams and weekly class timetable at a glance.
+          </Box>
+
+          {/* Tabs */}
+          <Paper
+            elevation={3}
+            sx={{
+              mb: 3,
+              borderRadius: 3,
+              background: "linear-gradient(to right, #f0f4ff, #ffffff)",
+              backdropFilter: "blur(10px)",
+              overflowX: "auto",
+            }}
+          >
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              variant="scrollable"
+              scrollButtons="auto"
+              textColor="primary"
+              indicatorColor="primary"
+              sx={{
+                px: 2,
+                "& .MuiTab-root": {
+                  fontWeight: 600,
+                  textTransform: "none",
+                },
+                "& .Mui-selected": {
+                  color: "#1976d2",
+                },
+              }}
+            >
+              <Tab label="📝 Exam Schedule" />
+              <Tab label="📚 Timetable" />
+            </Tabs>
+          </Paper>
+
+          <Divider sx={{ mb: 3 }} />
+
+          {/* Tab Content */}
           {value === 0 && <ExamSchedule />}
           {value === 1 && <Timetable />}
         </Box>

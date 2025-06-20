@@ -7,151 +7,123 @@ import {
   CardMedia,
   CardContent,
   Avatar,
-  useTheme,
+  Button,
+  Grid,
 } from "@mui/material";
 import GroupWorkIcon from "@mui/icons-material/GroupWork";
-import rgukt from "@/assets/rgukt.jpg";
 import NotificationButton from "../../common/NotificationButton/NotificationButton";
-import { useNavigate } from "react-router-dom"; // Add this at top
+import { useNavigate } from "react-router-dom";
 
+const Events = () => {
+  const navigate = useNavigate();
 
-   // Initialize navigate
-
-  
-
-const Events = () =>{
-
-    const navigate = useNavigate();
-     const Events = [
+  const events = [
     {
-      name: "Event1",
-      description: "Tech event for all CSE students",
-      details:
-        "This is a technical gathering with talks on AI, ML, and competitive programming.",
+      name: "Tech Conference",
+      description: "AI, ML, Competitive Programming Talks",
+      image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
     },
     {
-      name: "Event2",
-      description: "Farewell send-off to R19 batch",
-      details:
-        "R19 batch farewell with speeches, performances, and photo sessions.",
+      name: "Farewell R19",
+      description: "Speeches, performances, and memories",
+      image: "https://images.unsplash.com/photo-1531058020387-3be344556be6",
     },
     {
-      name: "Event3",
-      description: "Abhiyanth cultural and tech fest of RGUKT RK Valley",
-      details:
-        "A 3-day celebration with cultural programs, workshops, exhibitions, and competitions.",
+      name: "Abhiyanth Fest",
+      description: "Cultural + Technical Extravaganza",
+      image: "https://images.unsplash.com/photo-1494526585095-c41746248156",
     },
   ];
 
+  return (
+    <>
+      <NotificationButton />
+      <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#f3f4f6" }}>
+        {/* Sidebar */}
+        <Box sx={{ width: 240, bgcolor: "#fff", height: "100vh", flexShrink: 0 }}>
+          <SidebarMenu />
+        </Box>
 
-    return (
-        <>
-    <NotificationButton/>
-        <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-      <Box sx={{ width: 240, bgcolor: "#f5f5f5", height: "100vh", flexShrink: 0 }}>
-        <SidebarMenu />
-      </Box>
-
-      {/* Main Content */}
-      <Box
-        sx={{
-          flexGrow: 1,
-          p: 5,
-          overflowY: "auto",
-          bgcolor: "#f3f4f6",
-        }}
-      >
-        <Typography
-          variant="h4"
-          color="primary"
-          fontWeight={700}
-          textAlign="center"
-          mb={4}
-          sx={{ letterSpacing: 1 }}
-        >
-          Events
-        </Typography>
-
-        {/* Scrollable Card Row */}
-        <Box
-          sx={{
-            display: "flex",
-            gap: 3,
-            overflowX: "auto",
-            scrollSnapType: "x mandatory",
-            px: 1,
-            pb: 3,
-            pt: 3,
-            "&::-webkit-scrollbar": {
-              height: 8,
-            },
-            "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "#ccc",
-              borderRadius: 4,
-            },
-          }}
-        >
-            {Events.map((event, index) => (
-  <Box
-    key={index}
-    onClick={() => navigate(`/events/${event.name}`)}
-    sx={{ cursor: "pointer" }}
-  >
-    <Card
-      elevation={5}
-      sx={{
-        minWidth: 300,
-        maxWidth: 320,
-        borderRadius: 4,
-        flexShrink: 0,
-        scrollSnapAlign: "start",
-        background: "rgba(255, 255, 255, 0.75)",
-        backdropFilter: "blur(10px)",
-        boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
-        transition: "transform 0.3s ease, box-shadow 0.3s ease",
-        "&:hover": {
-          transform: "translateY(-6px)",
-          boxShadow: "0 12px 24px rgba(0,0,0,0.2)",
-        },
-      }}
-    >
-      <CardMedia sx={{ height: 140 }} image={rgukt} title={event.name} />
-      <CardContent>
-        <Box display="flex" alignItems="center" mb={2}>
-          <Avatar
-            sx={{
-              bgcolor: "primary.main",
-              background: "linear-gradient(135deg, #4f46e5, #3b82f6)",
-              color: "#fff",
-              width: 48,
-              height: 48,
-            }}
+        {/* Main Content */}
+        <Box sx={{ flexGrow: 1, p: { xs: 2, md: 4 }, ml: { md: 2 } }}>
+          <Typography
+            variant="h4"
+            color="primary"
+            fontWeight={700}
+            textAlign="center"
+            mb={4}
+            sx={{ letterSpacing: 1 }}
           >
-            <GroupWorkIcon />
-          </Avatar>
-          <Typography variant="h6" fontWeight={600} ml={2}>
-            {event.name}
+            Upcoming Events
           </Typography>
-                </Box>
-                    <Typography variant="body2" color="text.secondary">
-                    {event.description}
-                    </Typography>
-                </CardContent>
-                </Card>
-            </Box>
-            ))}
 
+          <Grid container spacing={4} justifyContent="center">
+            {events.map((event, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Card
+                  elevation={6}
+                  onClick={() => navigate(`/events/${event.name}`)}
+                  sx={{
+                    borderRadius: 4,
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    cursor: "pointer",
+                    transition: "transform 0.3s ease",
+                    "&:hover": {
+                      transform: "scale(1.02)",
+                    },
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    image={`${event.image}?auto=format&fit=crop&w=600&q=80`}
+                    alt={event.name}
+                    sx={{
+                      height: 250,
+                      objectFit: "cover",
+                      borderTopLeftRadius: 16,
+                      borderTopRightRadius: 16,
+                    }}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Box display="flex" alignItems="center" mb={1}>
+                      <Avatar
+                        sx={{
+                          bgcolor: "primary.main",
+                          color: "#fff",
+                          width: 40,
+                          height: 40,
+                        }}
+                      >
+                        <GroupWorkIcon fontSize="small" />
+                      </Avatar>
+                      <Typography variant="h6" fontWeight={600} ml={2}>
+                        {event.name}
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" color="text.secondary">
+                      {event.description}
+                    </Typography>
+                  </CardContent>
+                  <Box px={2} pb={2}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      fullWidth
+                      sx={{ borderRadius: 2, textTransform: "none" }}
+                    >
+                      View Details
+                    </Button>
+                  </Box>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
       </Box>
-    </Box>
     </>
-    );
-}
+  );
+};
 
 export default Events;
-
-
-
-
-
-
