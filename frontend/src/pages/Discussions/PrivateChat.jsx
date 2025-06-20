@@ -10,7 +10,7 @@ export default function PrivateChat({ me, peer }) {
   useEffect(() => {
     if (!peer) return;
     (async () => {
-      const res = await fetch('/private_history', {
+      const res = await fetch('http://localhost:3000/private_history', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({ between: { userA: me, userB: peer } })

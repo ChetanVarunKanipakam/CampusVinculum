@@ -89,12 +89,16 @@ export default function App() {
         </Box>
         <Divider />
         <List>
-          {usersInRoom.map(u => (
-            <ListItem key={u} selected={u === selectedUser} button onClick={() => setSelectedUser(u)}>
+          {usersInRoom.map(u =>{ 
+            {if(u===username){
+              u="(you) "+u;
+            }}
+            return (
+            <ListItem key={u} selected={u === selectedUser} onClick={() => setSelectedUser(u)}>
               <Badge color={onlineStatus[u] ? 'success' : 'default'} variant="dot" sx={{mr:1}}/>
               <ListItemText primary={u}/>
             </ListItem>
-          ))}
+          )})}
         </List>
         {selectedUser && <Button fullWidth onClick={() => setSelectedUser(null)}>← Back</Button>}
       </Box>
