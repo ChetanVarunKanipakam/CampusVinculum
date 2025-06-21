@@ -34,7 +34,7 @@ app.use('/api/exams', examRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/alumini', alumniRoutes);
-app.use('/api/announcement', announcementRoutes);
+app.use('/api/announcements', announcementRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/department', departmentRoutes);
 app.use('/api/clubs', clubRoutes);

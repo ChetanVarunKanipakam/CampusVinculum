@@ -18,12 +18,16 @@ import Notification from './common/Notification/Notification.jsx';
 import ClubDetails from './pages/ClubDetails/ClubDetails.jsx';
 import EventDetails from './pages/EventDetials/EventDetials.jsx';
 import Discussions from './pages/Discussions/Discussions.jsx';
+import FacultyDashboard from './pages/Dashboard/FacultyDashboard.jsx';
+import FacultyClubs from './pages/Clubs/FacultyClubs.jsx';
+import FacultySchedules from './pages/Schedules/FacultySchedule.jsx';
+import FacultyAnnouncements from './pages/Announcements/Announcements.jsx';
 
 function App() {
   const [auth, setAuth] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
-      navigate("/dashboard");
+      navigate("/faculty");
       setAuth(true);
 
   }, []);
@@ -49,6 +53,11 @@ function App() {
             <Route path="/clubs/:clubName" element={<ClubDetails />} />
             <Route path="/events/:eventName" element={<EventDetails />} />
             <Route path="/discussions" element={<Discussions/>} />
+            <Route path="/faculty" element={<FacultyDashboard/>} />
+            <Route path="/faculty/dashboard" element={<FacultyDashboard/>} />
+            <Route path="/faculty/clubs" element={<FacultyClubs/>} />
+            <Route path="/faculty/schedules" element={<FacultySchedules/>} />
+            <Route path="/faculty/announcement" element={<FacultyAnnouncements/>} />
             <Route
               path="/"
               element={<Dashboard/>}

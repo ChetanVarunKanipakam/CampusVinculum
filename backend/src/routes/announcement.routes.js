@@ -6,7 +6,7 @@ import {createAnnouncement,updateAnnouncement,getAllAnnouncements} from "../cont
 import express from 'express';
 const router = express.Router();
 // Create a new announcement
-router.post('/announcements', createAnnouncement);
+router.post('/', createAnnouncement);
 
 // Update an existing announcement by ID
 router.put('/announcements/:id', updateAnnouncement);

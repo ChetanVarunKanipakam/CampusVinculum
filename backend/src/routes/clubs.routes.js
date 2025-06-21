@@ -3,7 +3,7 @@ import { addClub, getAllClubs } from "../controllers/clubController.js";
 
 const router = express.Router();
 // Route to add a new club
-router.post('/add-club', addClub);
+router.post('/clubs', addClub);
 
 // Route to get all clubs
 router.get('/clubs', getAllClubs);

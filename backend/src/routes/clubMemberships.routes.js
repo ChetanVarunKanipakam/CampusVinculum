@@ -8,7 +8,7 @@ import {
 } from '../controllers/clubMembershipController.js';
 
 const router = express.Router();
-router.post('/membership', addMembership);
+router.post('/', addMembership);
 router.get('/membership/club/:clubID', getMembersByClub);
 
 export default router;

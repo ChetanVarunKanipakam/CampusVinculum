@@ -102,7 +102,7 @@ io.on('connection', (socket) => {
     if (u) socket.to(u.room).emit('hide_typing');
   });
 
-  socket.on('disconnect', async () => {
+  socket.on('leave_room', async () => {
     const u = users[socket.id];
     if (!u) return;
 

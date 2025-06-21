@@ -7,6 +7,10 @@ export const addClub=async(req,res)=>{
             name,description,createdDate: new Date(),
             adminID,
         });
+        await RoomUser.insertOne(
+          {name: "clubsecretkey"+name , username },
+          { upsert: true }
+       );
         const savedClub = await newClub.save();
         res.status(201).json(savedClub);
      } catch (error) {

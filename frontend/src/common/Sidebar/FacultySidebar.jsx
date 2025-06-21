@@ -17,14 +17,14 @@ import profPic from "@/assets/profpic.jpg";
 // import Loading from "@/components/Loading/Loading";
 // import { useSelector } from "react-redux";
 
-const SidebarMenu = () => {
+const FacultySidebarMenu = () => {
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const userDataCalling = async () => {
     setLoading(true);
     let data = {
-        name:"chetan",
+        name:"vennela",
         profilePic:profPic,
     };
     setLoading(false);
@@ -64,12 +64,12 @@ const SidebarMenu = () => {
         </div>
 
         <div className="w-12/12 flex">
-        <NavLink to="/dashboard" className="w-full text-base font-bold py-1 px-3 text-blue-800 hover:bg-blue-600 hover:text-white rounded flex items-center gap-x-2">
+        <NavLink to="/faculty/dashboard" className="w-full text-base font-bold py-1 px-3 text-blue-800 hover:bg-blue-600 hover:text-white rounded flex items-center gap-x-2">
           <MdSpaceDashboard /> Dashboard
         </NavLink>
       </div>
       <div className="w-12/12 flex">
-        <NavLink to="/clubs" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
+        <NavLink to="/faculty/clubs" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
           <FaUsers /> Clubs
         </NavLink>
       </div>
@@ -84,23 +84,18 @@ const SidebarMenu = () => {
         </NavLink>
       </div>
       <div className="w-12/12 flex">
-        <NavLink to="/live-sessions" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
+        <NavLink to="faculty/live-sessions" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
           <MdLiveTv /> Live Sessions
         </NavLink>
       </div>
       <div className="w-12/12 flex">
-        <NavLink to="/schedules" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
+        <NavLink to="/faculty/schedules" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
           <AiOutlineCalendar  /> Schedules
         </NavLink>
       </div>
       <div className="w-12/12 flex">
-        <NavLink to="/jobs" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
-          <HiOutlineBriefcase/> Job Postings
-        </NavLink>
-      </div>
-      <div className="w-12/12 flex ">
-        <NavLink to="/events" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
-          <MdEvent  /> Events
+        <NavLink to="/faculty/announcement" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
+          <HiOutlineBriefcase/> Announcements
         </NavLink>
       </div>
 
@@ -121,4 +116,4 @@ const SidebarMenu = () => {
 
 };
 
-export default SidebarMenu;
+export default FacultySidebarMenu;

@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import socket from '@/socket.js';
 import PrivateChat from './PrivateChat.jsx';
+import JoinRoomForm from './JoinRoomForm.jsx';
 import {
   Box, Typography, TextField, Button, IconButton, List,
-  ListItem, ListItemText, Divider, Badge, Tooltip
+  ListItem, ListItemText, Divider, Badge, Tooltip, Paper
 } from '@mui/material';
 import { Group, Brightness4, Brightness7 } from '@mui/icons-material';
 
-export default function App() {
+export default function Discussions({username1,room1,joined1}) {
   const [username, setUsername] = useState('');
   const [room, setRoom] = useState('');
   const [joined, setJoined] = useState(false);
@@ -22,6 +23,17 @@ export default function App() {
 
   const refEnd = useRef();
   const typingTimeout = useRef();
+ 
+  useEffect(() => {
+  if (username1) setUsername(username1);
+  if (room1) setRoom(room1);
+  if (joined1){ 
+    setJoined(joined1);
+  }
+  console.log(username,room,joined);
+  joinRoom()
+}, [username, room, joined]);
+
 
   useEffect(() => {
     socket.on('join_room', () => {});
@@ -31,17 +43,20 @@ export default function App() {
     socket.on('user_left', t => setMessages(prev => [...prev, { text: t, type: 'system' }]));
     socket.on('show_typing', m => setTypingMsg(m));
     socket.on('hide_typing', () => setTypingMsg(''));
-    socket.on('update_user_list', ({users, onlineStatus}) => {
+    socket.on('update_user_list', ({ users, onlineStatus }) => {
       setUsersInRoom(users);
       setOnlineStatus(onlineStatus);
     });
-    return () => socket.removeAllListeners();
+    return () => {
+    socket.emit('leave_room', { username, room });
+    socket.removeAllListeners();
+  };
   }, []);
 
-  useEffect(() => refEnd.current?.scrollIntoView({behavior:'smooth'}), [messages]);
+  useEffect(() => refEnd.current?.scrollIntoView({ behavior: 'smooth' }), [messages]);
 
   const joinRoom = () => {
-    if (!username || !room) return;
+    if (!username.trim() || !room.trim()) return;
     socket.emit('join_room', { username, room });
     setJoined(true);
   };
@@ -59,48 +74,50 @@ export default function App() {
     typingTimeout.current = setTimeout(() => socket.emit('stop_typing'), 1000);
   };
 
-  if (!joined) return (
-    <Box minHeight="100vh" flex display="flex" alignItems="center" justifyContent="center" bgcolor={darkMode?'#222':'#f0f0f0'}>
-      <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={3}>
-        <Typography variant="h5" mb={2}>Join or Create Room</Typography>
-        <TextField fullWidth label="Username" value={username} onChange={e => setUsername(e.target.value)} sx={{mb:2}} />
-        <TextField fullWidth label="Room Name" value={room} onChange={e => setRoom(e.target.value)} sx={{mb:2}} />
-        <Button variant="contained" onClick={joinRoom}>Join</Button>
-        <Box mt={2}>
+  const bgColor = darkMode ? '#121212' : '#f5f5f5';
+  const bubbleColor = (from) => from === username ? '#1976d2' : '#e0e0e0';
+  const textColor = (from) => from === username ? '#fff' : '#000';
+
+  return(
+  <>{!joined?<JoinRoomForm
+        username={username}
+        room={room}
+        darkMode={darkMode}
+        setUsername={setUsername}
+        setRoom={setRoom}
+        joinRoom={joinRoom}
+        setDarkMode={setDarkMode}
+      />:
+    <Box height="calc(100vh - 64px)" display="flex" bgcolor={bgColor}>
+      {/* Sidebar */}
+      <Box width={300} p={2} bgcolor={darkMode ? '#1e1e1e' : '#fff'} borderRight="1px solid #ccc">
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+          <Typography variant="h6" display="flex" alignItems="center"><Group fontSize="small" sx={{ mr: 1 }} />Members</Typography>
           <Tooltip title="Toggle theme">
             <IconButton onClick={() => setDarkMode(!darkMode)}>
               {darkMode ? <Brightness7 /> : <Brightness4 />}
             </IconButton>
           </Tooltip>
         </Box>
-      </Box>
-    </Box>
-  );
-
-  return (
-    <Box height="calc(100vh - 64px)" display="flex" bgcolor={darkMode?'#222':'#eaeaea'}>
-      {/* Sidebar */}
-      <Box width={300} p={2} bgcolor={darkMode?'#333':'#fff'} borderRight="1px solid #888">
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-          <Typography variant="h6"><Group/> Members</Typography>
-          <IconButton onClick={() => setDarkMode(!darkMode)}>
-            {darkMode ? <Brightness7 /> : <Brightness4 />}
-          </IconButton>
-        </Box>
-        <Divider />
-        <List>
-          {usersInRoom.map(u =>{ 
-            {if(u===username){
-              u="(you) "+u;
-            }}
+        <Divider sx={{ mb: 1 }} />
+        <List dense>
+          {usersInRoom.map(u => {
+            const displayName = u === username ? `${u} (You)` : u;
             return (
-            <ListItem key={u} selected={u === selectedUser} onClick={() => setSelectedUser(u)}>
-              <Badge color={onlineStatus[u] ? 'success' : 'default'} variant="dot" sx={{mr:1}}/>
-              <ListItemText primary={u}/>
-            </ListItem>
-          )})}
+              <ListItem key={u} selected={u === selectedUser} onClick={() => setSelectedUser(u)} button>
+                <Badge
+                  color={onlineStatus[u] ? 'success' : 'default'}
+                  variant="dot"
+                  sx={{ mr: 1 }}
+                />
+                <ListItemText primary={displayName} />
+              </ListItem>
+            );
+          })}
         </List>
-        {selectedUser && <Button fullWidth onClick={() => setSelectedUser(null)}>← Back</Button>}
+        {selectedUser && (
+          <Button fullWidth onClick={() => setSelectedUser(null)} sx={{ mt: 2 }}>← Back</Button>
+        )}
       </Box>
 
       {/* Chat Area */}
@@ -109,28 +126,62 @@ export default function App() {
           <PrivateChat me={username} peer={selectedUser} />
         ) : (
           <>
-            <Typography variant="h6" mb={1}>
-              You: {username} | Room: {room}
+            <Typography variant="subtitle1" gutterBottom>
+              <strong>User:</strong> {username} | <strong>Room:</strong> {room}
             </Typography>
-            <Box flex={1} overflow="auto">
-              {messages.map((m,i) => (
-                <Box key={i} display="flex" justifyContent={m.from === username ? 'flex-end' : 'flex-start'} mb={1}>
-                  <Box p={1} borderRadius={2} bgcolor={m.type==='system'?'#fffae6': m.from===username? '#1976d2':'#ddd'} color={m.from===username?'#fff':'#000'} maxWidth="70%">
+            <Box flex={1} overflow="auto" px={1}>
+              {console.log(msg)}
+              {messages.map((m, i) => (
+                <Box
+                  key={i}
+                  display="flex"
+                  justifyContent={m.from === username ? 'flex-end' : 'flex-start'}
+                  mb={1}
+                >
+                  <Paper
+                    sx={{
+                      p: 1,
+                      borderRadius: 2,
+                      bgcolor: m.type === 'system' ? '#ffe0b2' : bubbleColor(m.from),
+                      color: m.type === 'system' ? '#000' : textColor(m.from),
+                      maxWidth: '70%',
+                    }}
+                    elevation={2}
+                  >
+                    {m.type !== 'system' && (
+                      <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                        {m.from}
+                      </Typography>
+                    )}
                     <Typography variant="body2">{m.text}</Typography>
-                    {m.timestamp && <Typography variant="caption" display="block" textAlign="right">{m.timestamp}</Typography>}
-                  </Box>
+                    {m.timestamp && (
+                      <Typography variant="caption" display="block" textAlign="right">
+                        {m.timestamp}
+                      </Typography>
+                    )}
+                  </Paper>
                 </Box>
               ))}
               <div ref={refEnd} />
             </Box>
-            {typingMsg && <Typography variant="caption" mb={1} color="#888">{typingMsg}</Typography>}
-            <Box display="flex" mt={1}>
-              <TextField fullWidth placeholder="Type your message..." value={msg} onChange={onTyping} onKeyDown={e => e.key==='Enter' && sendMessage()} />
+            {typingMsg && (
+              <Typography variant="caption" color="textSecondary" mt={1}>
+                {typingMsg}
+              </Typography>
+            )}
+            <Box display="flex" mt={2} gap={1}>
+              <TextField
+                fullWidth
+                placeholder="Type a message..."
+                value={msg}
+                onChange={onTyping}
+                onKeyDown={e => e.key === 'Enter' && sendMessage()}
+              />
               <Button variant="contained" onClick={sendMessage}>Send</Button>
             </Box>
           </>
         )}
       </Box>
     </Box>
-  );
+  }</>) ;
 }
