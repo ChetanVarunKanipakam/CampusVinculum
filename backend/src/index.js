@@ -36,7 +36,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/alumini', alumniRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/courses', courseRoutes);
-app.use('/api/department', departmentRoutes);
+app.use('/api/departments', departmentRoutes);
 app.use('/api/clubs', clubRoutes);
 app.use('/api/discussionThreads', discussionRoutes);
 app.use('/api/enrollements', enrollmentRoutes);

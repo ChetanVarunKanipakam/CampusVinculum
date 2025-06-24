@@ -37,13 +37,9 @@ const Events = () => {
 
   return (
     <>
+    <div className="animate-fade-in duration-500">
       <NotificationButton />
-      <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#f3f4f6" }}>
-        {/* Sidebar */}
-        <Box sx={{ width: 240, bgcolor: "#fff", height: "100vh", flexShrink: 0 }}>
-          <SidebarMenu />
-        </Box>
-
+      <Box sx={{ width: "100%", maxWidth: "100%", px: { xs: 2, md: 6 }, py: 4 }}>
         {/* Main Content */}
         <Box sx={{ flexGrow: 1, p: { xs: 2, md: 4 }, ml: { md: 2 } }}>
           <Typography
@@ -122,6 +118,7 @@ const Events = () => {
           </Grid>
         </Box>
       </Box>
+      </div>
     </>
   );
 };

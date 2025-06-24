@@ -26,30 +26,10 @@ const Schedules = () => {
 
   return (
     <>
+    <div className="animate-fade-in duration-500">
       <NotificationButton />
 
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          height: "100vh",
-          overflow: "hidden",
-          bgcolor: "#eef2f7",
-        }}
-      >
-        {/* Sidebar */}
-        <Box
-          sx={{
-            width: { xs: "100%", md: 240 },
-            bgcolor: "#f5f5f5",
-            height: { xs: "auto", md: "100vh" },
-            flexShrink: 0,
-            borderRight: { md: "1px solid #ddd" },
-            boxShadow: { md: "2px 0 6px rgba(0,0,0,0.05)" },
-          }}
-        >
-          <SidebarMenu />
-        </Box>
+      <Box sx={{ width: "100%", maxWidth: "100%", px: { xs: 2, md: 6 }, py: 4 }}>
 
         {/* Main Content */}
         <Box
@@ -138,6 +118,7 @@ const Schedules = () => {
           {value === 1 && <Timetable />}
         </Box>
       </Box>
+      </div>
     </>
   );
 };

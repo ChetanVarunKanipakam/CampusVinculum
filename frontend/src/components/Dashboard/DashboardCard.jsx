@@ -1,16 +1,11 @@
 import React from "react";
 import {
-  Card,
-  CardContent,
-  Box,
-  Typography,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
+  Card, CardContent, Box, Typography, List,
+  ListItem, ListItemIcon, ListItemText, TextField, IconButton
 } from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
-const DashboardCard = ({ title, icon, items, itemIcon }) => (
+const DashboardCard = ({ title, icon, items = [], itemIcon, inputValue, onInputChange, onAdd }) => (
   <Card
     elevation={6}
     sx={{
@@ -33,7 +28,7 @@ const DashboardCard = ({ title, icon, items, itemIcon }) => (
           {title}
         </Typography>
       </Box>
-      <List dense>
+      <List dense sx={{ maxHeight: 160, overflowY: "auto" }}>
         {items.map((item, i) => {
           const label = Array.isArray(item) ? item[0] : item;
           const iconComp = Array.isArray(item) ? item[1] : itemIcon;
@@ -45,6 +40,21 @@ const DashboardCard = ({ title, icon, items, itemIcon }) => (
           );
         })}
       </List>
+      {onAdd && (
+        <Box mt={1} display="flex" alignItems="center" gap={1}>
+          <TextField
+            size="small"
+            variant="outlined"
+            placeholder={`Add ${title.slice(0, -1)}`}
+            value={inputValue}
+            onChange={onInputChange}
+            sx={{ flex: 1 }}
+          />
+          <IconButton onClick={onAdd} color="primary">
+            <AddCircleOutlineIcon />
+          </IconButton>
+        </Box>
+      )}
     </CardContent>
   </Card>
 );

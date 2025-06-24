@@ -1,63 +1,114 @@
-import React from "react";
-import { Box } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, IconButton } from "@mui/material";
+import DashboardCard from "./DashboardCard";
 import SchoolIcon from "@mui/icons-material/School";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import GroupIcon from "@mui/icons-material/Group";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import CodeIcon from "@mui/icons-material/Code";
-import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import StarIcon from "@mui/icons-material/Star";
-import DashboardCard from "./DashboardCard";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
 
-const CardSection = () => {
+const CardSection = ({ skillsset = [], achievementsset = [], clubs = [], clubNotifs = [] }) => {
+  const [skills, setSkills] = useState([]);
+  const [achievements, setAchievements] = useState([]);
+  const [newSkill, setNewSkill] = useState("");
+  const [newAchievement, setNewAchievement] = useState("");
+  const token = localStorage.getItem("campusvinculum");
+
+  useEffect(() => {
+    setSkills(skillsset || []);
+  }, [skillsset]);
+
+  useEffect(() => {
+    setAchievements(achievementsset || []);
+  }, [achievementsset]);
+
+  const handleAddSkill = async () => {
+    if (!newSkill.trim()) return;
+    await axios.post(
+      "http://localhost:3000/api/students/skills",
+      { skill: newSkill },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    setSkills((prev) => [...prev, newSkill]);
+    setNewSkill("");
+  };
+
+  const handleAddAchievement = async () => {
+    if (!newAchievement.trim()) return;
+    await axios.post(
+      "http://localhost:3000/api/students/achievements",
+      { achievement: newAchievement },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    setAchievements((prev) => [...prev, newAchievement]);
+    setNewAchievement("");
+  };
+
+  const handleDeleteSkill = async (skill) => {
+    await axios.delete("http://localhost:3000/api/students/skills", {
+      data: { skill },
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setSkills((prev) => prev.filter((s) => s !== skill));
+  };
+
+  const handleDeleteAchievement = async (achievement) => {
+    await axios.delete("http://localhost:3000/api/students/achievements", {
+      data: { achievement },
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setAchievements((prev) => prev.filter((a) => a !== achievement));
+  };
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        gap: 3,
-        overflowX: "auto",
-        pb: 2,
-        pt: 3,
-        pl: 1,
-        "&::-webkit-scrollbar": {
-          height: 8,
-        },
-        "&::-webkit-scrollbar-thumb": {
-          backgroundColor: "#ccc",
-          borderRadius: 4,
-        },
-      }}
-    >
+    <Box sx={{ display: "flex", gap: 3, overflowX: "auto", pb: 2, pt: 3, pl: 1 }}>
       <DashboardCard
         title="Skills"
         icon={<SchoolIcon color="primary" />}
-        items={["ReactJS", "NodeJS", "MongoDB", "Tailwind CSS"]}
-        itemIcon={<CodeIcon fontSize="small" />}
+        items={skills.map((s) => [
+          s,
+          <Box display="flex" alignItems="center">
+            <CodeIcon fontSize="small" />
+            <IconButton size="small" onClick={() => handleDeleteSkill(s)}>
+              <DeleteIcon fontSize="small" color="error" />
+            </IconButton>
+          </Box>,
+        ])}
+        inputValue={newSkill}
+        onInputChange={(e) => setNewSkill(e.target.value)}
+        onAdd={handleAddSkill}
       />
 
       <DashboardCard
         title="Achievements"
         icon={<EmojiEventsIcon color="success" />}
-        items={[
-          ["Top 1% in CodeChef", <StarIcon fontSize="small" color="warning" />],
-          ["Hackathon Winner", <EmojiObjectsIcon fontSize="small" color="info" />],
-          ["Best Project Award 2024", <CheckCircleIcon fontSize="small" color="secondary" />],
-        ]}
+        items={achievements.map((a) => [
+          a,
+          <Box display="flex" alignItems="center">
+            <AddCircleOutlineIcon fontSize="small" color="success" />
+            <IconButton size="small" onClick={() => handleDeleteAchievement(a)}>
+              <DeleteIcon fontSize="small" color="error" />
+            </IconButton>
+          </Box>,
+        ])}
+        inputValue={newAchievement}
+        onInputChange={(e) => setNewAchievement(e.target.value)}
+        onAdd={handleAddAchievement}
       />
 
       <DashboardCard
         title="Clubs"
         icon={<GroupIcon color="secondary" />}
-        items={["Tech Club", "Cultural Club", "AI & Robotics Club"]}
-        itemIcon={<GroupIcon fontSize="small" />}
+        items={clubs.map((c) => [c, <GroupIcon fontSize="small" />])}
       />
 
       <DashboardCard
         title="Club Notifications"
         icon={<NotificationsActiveIcon color="error" />}
-        items={["Tech Talk on June 20th", "Cultural Rehearsal – June 25th"]}
-        itemIcon={<NotificationsActiveIcon fontSize="small" />}
+        items={clubNotifs.map((n) => [n, <NotificationsActiveIcon fontSize="small" />])}
       />
     </Box>
   );

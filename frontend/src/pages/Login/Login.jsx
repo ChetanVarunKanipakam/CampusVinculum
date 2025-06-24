@@ -62,13 +62,13 @@ const Login = () => {
         },
       });
       setLoading(false);
-      localStorage.setItem("notebookToken", response.data.token);
+      localStorage.setItem("campusvinculum", response.data.token);
       setMessage(false);
       toast.success("Login Successfully", {
         position: "top-center",
       });
       // navigate("/");
-      navigate("/user/notes");
+      navigate("/dashboard");
       window.location.reload();
     } catch (error) {
       setLoading(false);

@@ -11,7 +11,7 @@ const NotificationButton = () => {
   };
 
   return (
-    <div className="fixed top-11 right-4 z-50">
+    <div className="fixed top-22 right-4 z-50">
       <button
         onClick={handleClick}
         className="relative bg-white p-2 rounded-full shadow-md hover:bg-blue-100 transition duration-300"

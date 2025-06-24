@@ -174,11 +174,8 @@ const LiveSessions = () => {
 
   return (
     <>
-      <NotificationButton />
-      <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#f5f7fa" }}>
-        <Box sx={{ width: 240, bgcolor: "#f5f5f5", height: "100vh", flexShrink: 0 }}>
-          <SidebarMenu />
-        </Box>
+    <div className="animate-fade-in duration-500">
+      <Box sx={{ width: "100%", maxWidth: "100%", px: { xs: 2, md: 6 }, py: 4 }}>
 
         <Box component="main" sx={{ flexGrow: 1, py: 4, px: { xs: 2, sm: 4 }, mt: 5 }}>
           <Container maxWidth="lg">
@@ -284,6 +281,7 @@ const LiveSessions = () => {
           )}
         </DialogActions>
       </Dialog>
+      </div>
     </>
   );
 };

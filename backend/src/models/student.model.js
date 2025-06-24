@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 
 const studentSchema = new mongoose.Schema({
@@ -7,13 +8,17 @@ const studentSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  enrollmentNumber: {
+  rollNumber: {
     type: String,
     required: true,
     unique: true,
   },
-  batch: {
-    type: String, // e.g. "2020-2024"
+  year: {
+    type: Number,
+    required: true,
+  },
+  section: {
+    type: String,
     required: true,
   },
   departmentID: {
@@ -21,25 +26,38 @@ const studentSchema = new mongoose.Schema({
     ref: 'Department',
     required: true,
   },
-  courseID: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Course',
+  clubs: {type:[
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Club',
+    }  
+  ],
+  default:[]},
+  skills: {
+    type: [String],
+    default: [],
   },
-  mentorshipID: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Mentorship',
+  achievements: {
+    type: [String],
+    default: [],
   },
-  dateOfAdmission: {
-    type: Date,
-    required: true,
+  clubNotifications: {
+    type: [String],
+    default: [],
   },
-  academicStatus: {
+  profilePicture: {
     type: String,
-    enum: ['Active', 'Graduated', 'Dropped'],
-    default: 'Active',
   },
+  contactInfo: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  joinedAt: {
+    type: Date,
+    default: Date.now,
+  }
 });
 
-const Student = mongoose.model('Student', studentSchema);
-
-export default Student;
+export default mongoose.model('Student', studentSchema);

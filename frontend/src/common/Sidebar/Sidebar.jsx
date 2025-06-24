@@ -13,7 +13,7 @@ import { FaGithub } from "react-icons/fa6";
 import { BsTwitterX } from "react-icons/bs";
 import { FaGlobe } from "react-icons/fa";
 import profPic from "@/assets/profpic.jpg";
-// import { GetUserData } from "@/utils/userApi";
+ import { GetUserData } from "@/utils/userApi";
 // import Loading from "@/components/Loading/Loading";
 // import { useSelector } from "react-redux";
 
@@ -23,15 +23,15 @@ const SidebarMenu = () => {
 
   const userDataCalling = async () => {
     setLoading(true);
-    let data = {
-        name:"chetan",
-        profilePic:profPic,
-    };
+    
+    let data =await GetUserData();
+    console.log(data);
     setLoading(false);
     setUserData(data);
   };
 
   useEffect(() => {
+    console.log(userData);
     userDataCalling();
   }, []);
 
@@ -39,84 +39,46 @@ const SidebarMenu = () => {
 
   return (
   <>
-    {/* Desktop Sidebar */}
-    <div className="hidden lg:inline-block w-2/12 h-screen shadow-2xl background_gradient_color fixed left-0 top-4 bottom-10 overflow-y-auto">
-      <div className="w-full h-full flex flex-col justify-start gap-y-5 items-center p-4">
-        {/* User Profile Section */}
-        <div className="w-full flex flex-col items-center">
-          <div className="w-24 md:w-28 flex mt-4">
-            <Link to="/profile" className="w-full rounded-full">
-              <img
-                src={profPic}
-                alt={userData.name || "#"}
-                className="w-full rounded-full object-cover"
-              />
-            </Link>
-          </div>
-          <div className="mt-3 mb-4 flex flex-col items-center">
-            <Link to="/profile" className="text-blue-700 font-bold text-xl">
-              {userData.name}
-            </Link>
-            <Link to="/profile" className="text-gray-600 font-bold text-base">
-              Chetan
-            </Link>
-          </div>
-        </div>
+    <div className="hidden lg:flex flex-col w-60 h-screen fixed top-20 left-0 z-30 p-5 bg-[#95c0ff] text-white shadow-2xl overflow-y-auto">
+  
+  {/* Navigation Links */}
+  <nav className="flex flex-col gap-3">
+    {[
+      { to: "/dashboard", label: "Dashboard", icon: <MdSpaceDashboard /> },
+      { to: "/clubs", label: "Clubs", icon: <FaUsers /> },
+      { to: "/discussions", label: "Discussions", icon: <FaComments /> },
+      { to: "/chatbot", label: "Chatbot", icon: <BsRobot /> },
+      { to: "/live-sessions", label: "Live Sessions", icon: <MdLiveTv /> },
+      { to: "/schedules", label: "Schedules", icon: <AiOutlineCalendar /> },
+      { to: "/jobs", label: "Job Postings", icon: <HiOutlineBriefcase /> },
+      { to: "/events", label: "Events", icon: <MdEvent /> },
+    ].map(({ to, label, icon }, index) => (
+      <NavLink
+        key={index}
+        to={to}
+        className={({ isActive }) =>
+          `flex items-center gap-3 px-4 py-2 rounded-md font-semibold transition-all text-white ${
+            isActive ? "bg-blue-700 shadow" : "hover:bg-blue-500 hover:shadow"
+          }`
+        }
+      >
+        <span className="text-xl">{icon}</span>
+        <span>{label}</span>
+      </NavLink>
+    ))}
+  </nav>
 
-        <div className="w-12/12 flex">
-        <NavLink to="/dashboard" className="w-full text-base font-bold py-1 px-3 text-blue-800 hover:bg-blue-600 hover:text-white rounded flex items-center gap-x-2">
-          <MdSpaceDashboard /> Dashboard
-        </NavLink>
-      </div>
-      <div className="w-12/12 flex">
-        <NavLink to="/clubs" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
-          <FaUsers /> Clubs
-        </NavLink>
-      </div>
-      <div className="w-12/12 flex">
-        <NavLink to="/discussions" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
-          <FaComments /> Discussions
-        </NavLink>
-      </div>
-      <div className="w-12/12 flex">
-        <NavLink to="/chatbot" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
-          <BsRobot /> Chatbot
-        </NavLink>
-      </div>
-      <div className="w-12/12 flex">
-        <NavLink to="/live-sessions" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
-          <MdLiveTv /> Live Sessions
-        </NavLink>
-      </div>
-      <div className="w-12/12 flex">
-        <NavLink to="/schedules" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
-          <AiOutlineCalendar  /> Schedules
-        </NavLink>
-      </div>
-      <div className="w-12/12 flex">
-        <NavLink to="/jobs" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
-          <HiOutlineBriefcase/> Job Postings
-        </NavLink>
-      </div>
-      <div className="w-12/12 flex ">
-        <NavLink to="/events" className="w-full text-base font-bold py-1 px-3 rounded text-blue-800 hover:bg-blue-600 hover:text-white flex items-center gap-x-2">
-          <MdEvent  /> Events
-        </NavLink>
-      </div>
-
-        {/* Social Media Section */}
-        <div className="w-full flex flex-col gap-y-2 items-center mt-6">
-          <hr className="border border-blue-700 mb-3 w-full" />
-          <div className="text-xl text-blue-700 font-bold">Follow Me</div>
-          <div className="w-8/12 flex justify-center gap-x-2 text-2xl text-blue-900">
-            <a href="https://in.linkedin.com/in/" target="_blank"><FaLinkedin /></a>
-            <a href="https://github.com/Vennela115" target="_blank"><FaGithub /></a>
-            <a href="https://x.com/" target="_blank"><BsTwitterX /></a>
-          </div>
-        </div>
-      </div>
+  {/* Socials */}
+  <div className="mt-10 flex flex-col items-center gap-2">
+    <p className="text-white text-sm mb-2">Follow Me</p>
+    <div className="flex gap-4 text-white text-2xl">
+      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>
+      <a href="https://github.com/Vennela115" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
+      <a href="https://x.com" target="_blank" rel="noopener noreferrer"><BsTwitterX /></a>
     </div>
-  </>
+  </div>
+</div>
+</>
 );
 
 };

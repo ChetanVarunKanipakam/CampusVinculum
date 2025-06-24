@@ -137,23 +137,19 @@ const Chatbot = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
   return (
-     < Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-      {/* Sidebar */}
-      <Box sx={{ width: 240, bgcolor: "#f5f5f5", height: "100vh", flexShrink: 0 }}>
-        <SidebarMenu />
-      </Box>
+     <Box sx={{ width: "100%", maxWidth: "100%", px: { xs: 2 }}}>
 
       {/* Main Content */}
       <Box
         sx={{
           flexGrow: 1,
-          p: { xs: 2, md: 4 },
+          p: { xs: 2 },
           mt: 5,
           overflowY: "auto",
           bgcolor: "#f0f0fa",
         }}
       >
-    <Box p={2} bgcolor="#f8f9fa" borderBottom="1px solid #ccc">
+    <Box p={2} bgcolor="#f8f9fa" borderBottom="1px solid #ccc" >
         <Typography variant="h4" fontWeight={700} color="primary" display="flex" alignItems="center">
           <ChatIcon sx={{ mr: 1 }} /> CampusVinculum Chatbot
         </Typography>
@@ -168,7 +164,7 @@ const Chatbot = () => {
           overflowY: "auto",
           px: 3,
           py: 2,
-          bgcolor: "#f0f2f5",
+          bgcolor: "#f0f0fa",
         }}
       >
         <List>
@@ -196,31 +192,40 @@ const Chatbot = () => {
 
       {/* Fixed Input */}
       <Box
-        sx={{
-          position: "sticky",
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          p: 2,
-          bgcolor: "#fff",
-          borderTop: "1px solid #ccc",
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-        }}
-      >
-        <TextField
-          fullWidth
-          placeholder="Type your message..."
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
-        <IconButton color="primary" onClick={sendPrompt} disabled={loading}>
-          {loading ? <CircularProgress size={24} /> : <SendIcon />}
-        </IconButton>
-      </Box>
-    </Box>
+    sx={{
+      position: "fixed",
+      bottom: 16, // 16px space from bottom
+      left: {xs:10,md:"260px"}, // Adjust if Sidebar is 260px wide
+      right: 16,
+      zIndex: 1000,
+      display: "flex",
+      bgcolor: "#fff",
+      boxShadow: "0px 4px 20px rgba(0,0,0,0.1)",
+      borderRadius: "12px",
+      p: 1,
+      gap: 1,
+      maxWidth: {xs:"100%",md:"calc(100% - 276px)"}, // Adjusted to leave room for sidebar
+      margin: "0 auto",
+    }}
+  >
+    <TextField
+      fullWidth
+      placeholder="Type your message..."
+      value={prompt}
+      onChange={(e) => setPrompt(e.target.value)}
+      onKeyPress={handleKeyPress}
+      size="small"
+      sx={{
+        "& .MuiInputBase-root": {
+          borderRadius: "8px",
+          bgcolor: "#f5f5f5",
+        },
+      }}
+    />
+    <IconButton color="primary" onClick={sendPrompt} disabled={loading}>
+      {loading ? <CircularProgress size={24} /> : <SendIcon />}
+    </IconButton>
+  </Box></Box>
     </Box>
     </Box>
   );
