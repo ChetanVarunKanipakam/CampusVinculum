@@ -9,7 +9,7 @@ import {
 
 import express from 'express';
 const router = express.Router();
-router.post('/jobs', createJobPosting);
+router.post('/', createJobPosting);
 router.put('/jobs/:jobId', updateJobPosting);
 router.delete('/jobs/:jobId', deletePosting);
 export default router;

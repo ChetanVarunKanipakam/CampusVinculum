@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Box, Typography, Grid, InputBase, IconButton, Button
 } from "@mui/material";
@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import AddClubMemberForm from "../../components/Club/AddClubMemberForm.jsx";
 import CreateClubForm from "../../components/Club/CreateClubForm.jsx";
+import axios from "axios";
+import { GetUserData } from "../../utils/userApi.js";
 
 // Placeholder data
 const facultyClubs = [
@@ -63,24 +65,54 @@ const FacultyClubCard = ({ club, onClick, background }) => (
 
 const FacultyClubs = () => {
   const [search, setSearch] = useState("");
+  const [clubs, setClubs] = useState([]);
   const navigate = useNavigate();
+    const [user,setUser]=useState(null);
+  
+   const userDataCalling = async () => {
+  const data = await GetUserData();
+  console.log(data);
+  setUser(data);
 
-  const filtered = facultyClubs.filter(
-    c => c.name.toLowerCase().includes(search.toLowerCase()) ||
-         c.description.toLowerCase().includes(search.toLowerCase())
+  if (data?.email) {
+    fetchFacultyClubs(data.email);
+  }
+};
+
+const fetchFacultyClubs = async (username) => {
+  try {
+    const res = await axios.get(`http://localhost:3000/api/clubs/${username}`);
+    setClubs(res.data.clubs || []);
+  } catch (error) {
+    console.error("Failed to fetch faculty clubs", error);
+  }
+};
+
+  
+    useEffect(()=>{
+      userDataCalling()
+  },[]);
+
+
+  
+
+
+  const filtered = clubs.filter(
+    c =>
+      c.name.toLowerCase().includes(search.toLowerCase()) ||
+      c.description.toLowerCase().includes(search.toLowerCase())
   );
+
 
   return (
     <>
       <NotificationButton />
-      <Box display="flex" height="100vh" overflow="hidden">
-        {/* Sidebar */}
-        <Box width={240} bgcolor="#f5f5f5" height="100vh" flexShrink={0}>
-          <SidebarMenu />
-        </Box>
+      
+
 
         {/* Main Content */}
-        <Box flexGrow={1} p={5} overflowY="auto" bgcolor="#f0f4ff">
+        <Box flexGrow={1} p={5} sx={{ overflowY: 'auto', bgcolor: '#f0f4ff' }}>
+
           {/* Search Bar */}
           <Box display="flex" justifyContent="center" mb={4}>
             <InputBase
@@ -119,7 +151,7 @@ const FacultyClubs = () => {
           </Box>
 
         </Box>
-      </Box>
+  
     </>
   );
 };

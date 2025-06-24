@@ -40,28 +40,9 @@ const FacultySidebarMenu = () => {
   return (
   <>
     {/* Desktop Sidebar */}
-    <div className="hidden lg:inline-block w-2/12 h-screen shadow-2xl background_gradient_color fixed left-0 top-4 bottom-10 overflow-y-auto">
+    <div className="hidden lg:inline-block w-2/12 h-screen shadow-2xl background_gradient_color fixed left-0 top-22 bottom-10 overflow-y-auto">
       <div className="w-full h-full flex flex-col justify-start gap-y-5 items-center p-4">
-        {/* User Profile Section */}
-        <div className="w-full flex flex-col items-center">
-          <div className="w-24 md:w-28 flex mt-4">
-            <Link to="/profile" className="w-full rounded-full">
-              <img
-                src={profPic}
-                alt={userData.name || "#"}
-                className="w-full rounded-full object-cover"
-              />
-            </Link>
-          </div>
-          <div className="mt-3 mb-4 flex flex-col items-center">
-            <Link to="/profile" className="text-blue-700 font-bold text-xl">
-              {userData.name}
-            </Link>
-            <Link to="/profile" className="text-gray-600 font-bold text-base">
-              Chetan
-            </Link>
-          </div>
-        </div>
+        
 
         <div className="w-12/12 flex">
         <NavLink to="/faculty/dashboard" className="w-full text-base font-bold py-1 px-3 text-blue-800 hover:bg-blue-600 hover:text-white rounded flex items-center gap-x-2">

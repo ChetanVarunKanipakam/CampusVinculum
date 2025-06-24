@@ -27,27 +27,34 @@ import DepartmentsPage from './pages/AdminDepartements/AdminDepartements.jsx';
 import UsersPage from './pages/AdminUsersPage/AdminUser.jsx';
 import AnnouncementsPage from './pages/AdminAnnouncements/AdminAnnouncements.jsx';
 import { jwtDecode } from 'jwt-decode';
+import AluminiDashboard from './pages/Dashboard/AluminiDashboard.jsx';
+import AluminiJobs from './pages/Jobs/AluminiJobs.jsx';
+import FacultySidebarMenu from './common/Sidebar/FacultySidebar.jsx';
+
 
 function App() {
   const [auth, setAuth] = useState(null);
+  const [userRole,setuserRole]=useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     const login = localStorage.getItem("campusvinculum");
     const user = login ? jwtDecode(login) : null; 
-
-    if (login) {
-      switch(user.role){
-        case 'Student': navigate("/dashboard");
-        break;
-        case 'Faculty': navigate("/faculty/dashboard");
-        break;
-        case 'Admin': navigate("/admin");
-      }
+    // console.log(user);
+    // if (login) {
+    //   switch(user.role){
+    //     case 'Student': navigate("/dashboard");
+    //     break;
+    //     case 'Faculty': navigate("/faculty/dashboard");
+    //     break;
+    //     case 'Admin': navigate("/admin");
+    //   }
       
-      setAuth(login);
-    } else {
-      navigate("/login");
-    }
+    //   setAuth(login);
+    // } else {
+    //   navigate("/login");
+    // }
+    setAuth(true);
+    setuserRole(user.role);
   }, []);
 
 
@@ -62,7 +69,7 @@ function App() {
       {auth?(<div className="flex flex-1 pt-16 overflow-hidden">
         {/* Sidebar - Fixed on large screens, scrollable */}
         <aside className="hidden lg:flex w-64 fixed top-16 bottom-0 left-0 overflow-y-auto z-40 shadow-md">
-          <SidebarMenu />
+          {userRole==="Student"?<SidebarMenu />:<FacultySidebarMenu/>}
         </aside>
 
         {/* Main Content - Scrollable */}
@@ -93,7 +100,10 @@ function App() {
             <Route path="/faculty/announcement" element={<FacultyAnnouncements />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/" element={<Dashboard />} />
-            
+            <Route path="/alumini" element={<AluminiDashboard/>}/>
+            <Route path="/alumini/dashboard" element={<AluminiDashboard/>}/>
+            <Route path="/alumini/chatbot" element={<Chatbot/>}/>
+            <Route path="/alumini/jobs" element={<AluminiJobs/>}/>
           </Routes>
         </main>
       </div>):
