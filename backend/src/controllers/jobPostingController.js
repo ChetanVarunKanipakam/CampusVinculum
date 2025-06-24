@@ -48,4 +48,25 @@ export const updateJobPosting=async(req,res)=>{
   } catch (err) {
     res.status(500).json({ error: 'Failed to update job posting', details: err.message });
   }
+};
+
+
+export const getJobsByPoster = async (req, res) => {
+  try {
+    const { postedBy } = req.query;
+
+    if (!postedBy) {
+      return res.status(400).json({ message: "Missing 'postedBy' query parameter" });
+    }
+
+    // Dynamically filter using postedBy
+    const jobs = await JobPosting.find({ postedBy })
+      .populate('postedBy', 'name email')  // optional: include name and email from Alumni
+      .exec();
+
+    res.status(200).json(jobs);
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    res.status(500).json({ message: error.message });
+  }
 }

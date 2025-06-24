@@ -27,6 +27,7 @@ import DepartmentsPage from './pages/AdminDepartements/AdminDepartements.jsx';
 import UsersPage from './pages/AdminUsersPage/AdminUser.jsx';
 import AnnouncementsPage from './pages/AdminAnnouncements/AdminAnnouncements.jsx';
 import { jwtDecode } from 'jwt-decode';
+import AluminiJobPostings from './pages/Jobs/AluminiJobPostings.jsx';
 
 function App() {
   const [auth, setAuth] = useState(null);
@@ -35,19 +36,21 @@ function App() {
     const login = localStorage.getItem("campusvinculum");
     const user = login ? jwtDecode(login) : null; 
 
-    if (login) {
-      switch(user.role){
-        case 'Student': navigate("/dashboard");
-        break;
-        case 'Faculty': navigate("/faculty/dashboard");
-        break;
-        case 'Admin': navigate("/admin");
-      }
+    // if (login) {
+    //   switch(user.role){
+    //     case 'Student': navigate("/dashboard");
+    //     break;
+    //     case 'Faculty': navigate("/faculty/dashboard");
+    //     break;
+    //     case 'Admin': navigate("/admin");
+    //   }
       
-      setAuth(login);
-    } else {
-      navigate("/login");
-    }
+    //   setAuth(login);
+    // } else {
+    //   navigate("/login");
+    // }
+    setAuth(true);
+ 
   }, []);
 
 
@@ -56,7 +59,7 @@ function App() {
      <div className="w-screen h-screen flex flex-col overflow-hidden">
       {/* Top Navbar */}
       <header className="h-16 fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
-        <Navbar />
+        {/* <Navbar /> */}
       </header>
 
       {auth?(<div className="flex flex-1 pt-16 overflow-hidden">
@@ -92,6 +95,7 @@ function App() {
             <Route path="/faculty/schedules" element={<FacultySchedules />} />
             <Route path="/faculty/announcement" element={<FacultyAnnouncements />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/alumini/jobPostings" element={<AluminiJobPostings/>}/>
             <Route path="/" element={<Dashboard />} />
             
           </Routes>
@@ -114,4 +118,4 @@ function App() {
       );
 }
 
-export default App
+export default App;
