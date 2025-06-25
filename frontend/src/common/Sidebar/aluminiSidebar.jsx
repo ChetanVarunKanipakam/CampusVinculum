@@ -1,5 +1,3 @@
-import react from "react";
-
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { MdSpaceDashboard } from "react-icons/md";
@@ -19,23 +17,22 @@ import profPic from "@/assets/profpic.jpg";
 // import Loading from "@/components/Loading/Loading";
 // import { useSelector } from "react-redux";
 
-const aluminiSidebarMenu = () => {
+const AluminiSidebar = () => {
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const userDataCalling = async () => {
     setLoading(true);
     
-    let data =await GetUserData(); 
+    let data =await GetUserData();
     console.log(data);
     setLoading(false);
     setUserData(data);
   };
 
-//   useEffect(() => {
-//     console.log(userData);
-//     userDataCalling();
-//   }, []);
+  useEffect(() => {
+    userDataCalling();
+  }, []);
 
   
 
@@ -43,17 +40,15 @@ const aluminiSidebarMenu = () => {
   <>
     <div className="hidden lg:flex flex-col w-60 h-screen fixed top-20 left-0 z-30 p-5 bg-[#95c0ff] text-white shadow-2xl overflow-y-auto">
   
+
   {/* Navigation Links */}
   <nav className="flex flex-col gap-3">
     {[
-      { to: "/dashboard", label: "Dashboard", icon: <MdSpaceDashboard /> },
-      { to: "/clubs", label: "Clubs", icon: <FaUsers /> },
-      { to: "/discussions", label: "Discussions", icon: <FaComments /> },
+      { to: "/alumini/dashboard", label: "Dashboard", icon: <MdSpaceDashboard /> },
       { to: "/chatbot", label: "Chatbot", icon: <BsRobot /> },
       { to: "/live-sessions", label: "Live Sessions", icon: <MdLiveTv /> },
-      { to: "/schedules", label: "Schedules", icon: <AiOutlineCalendar /> },
-      { to: "/jobs", label: "Job Postings", icon: <HiOutlineBriefcase /> },
-      { to: "/events", label: "Events", icon: <MdEvent /> },
+      { to: "/alumini/jobs", label: "Job Postings", icon: <HiOutlineBriefcase /> },
+      { to: "/mentorship", label: "Mentorship", icon: <MdEvent /> },
     ].map(({ to, label, icon }, index) => (
       <NavLink
         key={index}
@@ -85,4 +80,4 @@ const aluminiSidebarMenu = () => {
 
 };
 
-export default aluminiSidebarMenu;
+export default AluminiSidebar;
