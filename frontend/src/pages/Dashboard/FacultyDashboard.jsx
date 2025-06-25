@@ -24,21 +24,6 @@ const FacultyDashboard = () => {
       {/* Floating Notification Button */}
       <NotificationButton />
 
-      {/* Main Dashboard Layout */}
-      <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-        {/* Sidebar Section */}
-        <Box
-          sx={{
-            width: 240,
-            bgcolor: "#e0e0e0",
-            height: "100vh",
-            flexShrink: 0,
-            borderRight: "1px solid #ccc",
-          }}
-        >
-          <FacultySidebar />
-        </Box>
-
         {/* Dashboard Content Section */}
         <Box
           sx={{
@@ -116,7 +101,6 @@ const FacultyDashboard = () => {
                 itemIcon={<NotificationsActiveIcon fontSize="small" />}
             />
             </Box>
-        </Box>
       </Box>
     </>
   );

@@ -6,7 +6,7 @@ const jobPostingSchema = new mongoose.Schema({
   postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Alumni' },
   companyName: String,
   location: String,
-  applicationDeadline: Date
+  applicationDeadline: String
 });
 
 export default mongoose.model('JobPosting', jobPostingSchema);

@@ -41,7 +41,7 @@ export default function Discussions({username1,room1,joined1}) {
     socket.on('receive_message', m => setMessages(prev => [...prev, m]));
     socket.on('user_joined', t => setMessages(prev => [...prev, { text: t, type: 'system' }]));
     socket.on('user_left', t => setMessages(prev => [...prev, { text: t, type: 'system' }]));
-    socket.on('show_typing', m => setTypingMsg(m));
+    socket.on('typing', m => setTypingMsg(m));
     socket.on('hide_typing', () => setTypingMsg(''));
     socket.on('update_user_list', ({ users, onlineStatus }) => {
       setUsersInRoom(users);

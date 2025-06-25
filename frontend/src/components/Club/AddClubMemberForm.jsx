@@ -1,37 +1,53 @@
 import React, { useState, useEffect } from "react";
 import {
-  Box, TextField, MenuItem, Button, Typography
+  Box, TextField, Button, Typography, MenuItem
 } from "@mui/material";
 import axios from "axios";
+import { GetUserData } from "../../utils/userApi";
 
 const AddClubMemberForm = () => {
-  const [clubID, setClubID] = useState("");
-  const [userID, setUserID] = useState("");
+  const [clubName, setClubName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [role, setRole] = useState("Member");
-  const [clubs, setClubs] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const fetchClubsAndUsers = async () => {
-      const clubRes = await axios.get("/api/clubs");
-      const userRes = await axios.get("/api/users");
-      setClubs(clubRes.data);
-      setUsers(userRes.data);
+    const userDataCalling = async () => {
+      const data = await GetUserData();
+      console.log(data);
+      setUser(data);
     };
-    fetchClubsAndUsers();
+    userDataCalling();
   }, []);
 
   const handleAddMember = async () => {
-    if (!clubID || !userID || !role) return;
+    if (!clubName || !userEmail || !role) return alert("All fields are required.");
 
     try {
+      // Step 1: Get Club ID from club name
+      const clubRes = await axios.get(`/api/clubs/by-name/${clubName}`);
+      const club = clubRes.data;
+
+      if (!club || !club._id) return alert("Club not found.");
+
+      // Step 2: Get User ID from email
+      const userRes = await axios.get(`/api/users/by-email/${userEmail}`);
+      const foundUser = userRes.data;
+
+      if (!foundUser || !foundUser._id) return alert("User not found.");
+
+      // Step 3: Submit membership
       await axios.post("/api/clubMemberships", {
-        clubID,
-        userID,
+        clubID: club._id,
+        userID: foundUser._id,
         role,
         joinDate: new Date(),
       });
+
       alert("Member added to club!");
+      setClubName("");
+      setUserEmail("");
+      setRole("Member");
     } catch (err) {
       console.error(err);
       alert("Failed to add member.");
@@ -41,28 +57,28 @@ const AddClubMemberForm = () => {
   return (
     <Box p={3} maxWidth={600}>
       <Typography variant="h5" mb={2}>Add Member to Club</Typography>
-      <TextField
-        select fullWidth label="Select Club" value={clubID}
-        onChange={(e) => setClubID(e.target.value)}
-        margin="normal"
-      >
-        {Array.isArray(clubs) && clubs.map((club) => (
-          <MenuItem key={club._id} value={club._id}>{club.name}</MenuItem>
-        ))}
-      </TextField>
 
       <TextField
-        select fullWidth label="Select User" value={userID}
-        onChange={(e) => setUserID(e.target.value)}
+        fullWidth
+        label="Club Name"
+        value={clubName}
+        onChange={(e) => setClubName(e.target.value)}
         margin="normal"
-      >
-        {Array.isArray(users) && users.map((user) => (
-          <MenuItem key={user._id} value={user._id}>{user.name}</MenuItem>
-        ))}
-      </TextField>
+      />
 
       <TextField
-        select fullWidth label="Role" value={role}
+        fullWidth
+        label="User Email"
+        value={userEmail}
+        onChange={(e) => setUserEmail(e.target.value)}
+        margin="normal"
+      />
+
+      <TextField
+        select
+        fullWidth
+        label="Role"
+        value={role}
         onChange={(e) => setRole(e.target.value)}
         margin="normal"
       >
@@ -71,7 +87,9 @@ const AddClubMemberForm = () => {
         ))}
       </TextField>
 
-      <Button variant="contained" onClick={handleAddMember}>Add Member</Button>
+      <Button variant="contained" onClick={handleAddMember}>
+        Add Member
+      </Button>
     </Box>
   );
 };

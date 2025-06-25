@@ -1,11 +1,13 @@
 import jobPostingModel from "../models/jobPosting.model.js";
+import mongoose from "mongoose";
 
 //create jobposting
 export const createJobPosting=async (req,res)=>{
     try{
     const {title,description,postedBy,companyName,location,applicationDeadline}=req.body;
-    const newJobPosting=new new jobPostingModel({
-        title,description,postedBy,companyName,location,applicationDeadline
+    console.log(req.body);
+    const newJobPosting=new jobPostingModel({
+        title,description,postedBy: new mongoose.Types.ObjectId(String(postedBy)),companyName,location,applicationDeadline
     });
     const savedJob=await newJobPosting.save();
     res.status(201).json(savedJob);

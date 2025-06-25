@@ -1,19 +1,32 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import axios from "axios";
-
+import { GetUserData } from "../../utils/userApi";
+import { useEffect } from "react";
 const CreateClubForm = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [user,setUser]=useState(null);
+
+  const userDataCalling = async () => {
+      
+      let data =await GetUserData();
+      console.log(data);
+      setUser(data);
+    };
+
+  useEffect(()=>{
+    userDataCalling()
+},[]);
 
   const handleCreate = async () => {
     if (!name.trim() || !description.trim()) return;
 
     try {
       const createdDate = new Date();
-      const adminID = "ADMIN_USER_ID"; // Replace with actual admin ID (maybe from auth)
-
-      await axios.post("/api/clubs", { name, description, createdDate, adminID });
+    // Replace with actual admin ID (maybe from auth)
+      
+      await axios.post("http://localhost:3000/api/clubs", { name, description, createdDate, adminID: user._id });
       alert("Club created successfully!");
       setName("");
       setDescription("");
