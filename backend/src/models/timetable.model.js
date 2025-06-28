@@ -1,12 +1,31 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const timetableSchema = new mongoose.Schema({
-  course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true },
-  faculty: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  day: { type: String, required: true }, // e.g. "Monday"
-  startTime: { type: String, required: true }, // e.g. "10:00"
-  endTime: { type: String, required: true },
-  room: { type: String }
+  branch: {
+    type: String,
+    required: true,
+  },
+  year: {
+    type: Number,
+    required: true,
+  },
+  section: {
+    type: String,
+    required: true,
+  },
+  timeSlots: {
+    type: [String], // e.g., ["09:00 - 10:00", ...]
+    required: true,
+  },
+  days: {
+    type: [String], // e.g., ["Monday", "Tuesday", ...]
+    required: true,
+  },
+  timetable: {
+    type: Map,
+    of: [String], // e.g., { Monday: ["Maths", "Physics", ...] }
+    required: true,
+  }
 }, { timestamps: true });
 
-export default mongoose.model('Timetable', timetableSchema);
+export default mongoose.model("Timetable", timetableSchema);

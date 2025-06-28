@@ -1,11 +1,17 @@
-import express from 'express';
-const router = express.Router();
-import {createTimetable,getTimetables,getTimetablesByCourse,deleteTimetable} from '../controllers/timetableController.js';
-import { verifyToken, isRole } from '../middlewares/auth.middleware.js';
+import express from "express";
+import {
+  createTimetable,
+  getTimetableByGroup,
+  updateTimetable,
+  deleteTimetable
+} from "../controllers/timetableController.js";
 
-router.post('/create', verifyToken, isRole(['Faculty', 'Admin']), createTimetable);
-router.get('/all', verifyToken, getTimetables);
-router.get('/course/:courseId', verifyToken, getTimetablesByCourse);
-router.delete('/:id', verifyToken, isRole(['Admin']), deleteTimetable);
+const router = express.Router();
+
+// CRUD Routes
+router.post("/", createTimetable);
+router.get("/", getTimetableByGroup); // ?branch=CSE&year=2§ion=A
+router.put("/", updateTimetable);     // same query param
+router.delete("/", deleteTimetable);  // same query param
 
 export default router;

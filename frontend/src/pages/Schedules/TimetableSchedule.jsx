@@ -1,4 +1,5 @@
-import React from "react";
+// TimetableSchedule.jsx
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Table,
@@ -11,27 +12,9 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
+  CircularProgress,
 } from "@mui/material";
-
-// Time slots and days
-const timeSlots = [
-  "09:00 - 10:00",
-  "10:00 - 11:00",
-  "11:15 - 12:15",
-  "01:15 - 02:15",
-  "02:15 - 03:15",
-];
-
-const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-const timetableData = {
-  Monday: ["Maths", "Physics", "Chemistry", "Computer", "English"],
-  Tuesday: ["Physics", "Maths", "English", "Chemistry", "Computer"],
-  Wednesday: ["Chemistry", "English", "Physics", "Computer", "--"],
-  Thursday: ["English", "Chemistry", "Maths", "Physics", "Lab"],
-  Friday: ["Computer", "English", "Computer", "Maths", "Lab"],
-  Saturday: ["--", "--", "Seminar", "--", "--"],
-};
+import axios from "axios";
 
 const subjectColors = {
   Maths: "#bbdefb",
@@ -59,9 +42,46 @@ const getStyledCell = (subject) => {
   return { style, content };
 };
 
-const Timetable = () => {
+const Timetable = ({ user }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const [timetable, setTimetable] = useState({});
+  const [timeSlots, setTimeSlots] = useState([]);
+  const [days, setDays] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTimetable = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/api/timetable", {
+          params: {
+            year: user?.roleDetails?.year,
+            section: user?.roleDetails?.section,
+            branch: user?.departmentID?.name,
+          },
+        });
+
+        setTimetable(res.data.timetable);
+        setTimeSlots(res.data.timeSlots);
+        setDays(res.data.days);
+      } catch (error) {
+        console.error("Failed to fetch timetable", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user) fetchTimetable();
+  }, [user]);
+
+  if (loading) {
+    return (
+      <Box textAlign="center" py={10}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box px={isSmallScreen ? 1 : 4} py={4}>
@@ -95,29 +115,15 @@ const Timetable = () => {
       >
         <Table size={isSmallScreen ? "small" : "medium"}>
           <TableHead>
-            <TableRow
-              sx={{
-                background: "linear-gradient(to right, #ff9a9e, #a1c4fd)", // pink to aqua
-              }}
-            >
-              <TableCell
-                sx={{
-                  color: "white",
-                  fontWeight: 700,
-                  fontSize: isSmallScreen ? "0.75rem" : "1rem",
-                }}
-              >
+            <TableRow sx={{ background: "linear-gradient(to right, #ff9a9e, #a1c4fd)" }}>
+              <TableCell sx={{ color: "white", fontWeight: 700, fontSize: isSmallScreen ? "0.75rem" : "1rem" }}>
                 Day / Time
               </TableCell>
               {timeSlots.map((slot, index) => (
                 <TableCell
                   key={index}
                   align="center"
-                  sx={{
-                    color: "white",
-                    fontWeight: 700,
-                    fontSize: isSmallScreen ? "0.7rem" : "0.95rem",
-                  }}
+                  sx={{ color: "white", fontWeight: 700, fontSize: isSmallScreen ? "0.7rem" : "0.95rem" }}
                 >
                   {slot}
                 </TableCell>
@@ -127,16 +133,10 @@ const Timetable = () => {
           <TableBody>
             {days.map((day, i) => (
               <TableRow key={i}>
-                <TableCell
-                  sx={{
-                    fontWeight: 600,
-                    color: "#374151",
-                    fontSize: isSmallScreen ? "0.75rem" : "0.9rem",
-                  }}
-                >
+                <TableCell sx={{ fontWeight: 600, color: "#374151", fontSize: isSmallScreen ? "0.75rem" : "0.9rem" }}>
                   {day}
                 </TableCell>
-                {timetableData[day].map((subject, idx) => {
+                {timetable[day]?.map((subject, idx) => {
                   const { style, content } = getStyledCell(subject);
                   return (
                     <TableCell

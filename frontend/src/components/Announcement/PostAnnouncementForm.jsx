@@ -9,6 +9,8 @@ import {
   Snackbar,
   Alert
 } from "@mui/material";
+import axios from "axios";
+
 
 const targetOptions = ["Student", "Faculty", "Admin", "Alumni"];
 
@@ -19,6 +21,7 @@ const PostAnnouncementForm = () => {
     targetAudience: "Student",
   });
 
+  const token=localStorage.getItem("campusvinculum");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
@@ -39,13 +42,10 @@ const PostAnnouncementForm = () => {
     };
 
     try {
-      const res = await fetch("/api/announcements", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newAnnouncement),
-      });
+      const res = await axios.post('http://localhost:3000/api/announcements', newAnnouncement,{ headers: { Authorization: `Bearer ${token}` } });
+      
 
-      if (res.ok) {
+      if (res.status) {
         setSuccess(true);
         setAnnouncement({ title: "", content: "", targetAudience: "Student" });
       } else {

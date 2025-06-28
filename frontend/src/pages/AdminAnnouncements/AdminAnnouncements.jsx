@@ -14,7 +14,7 @@ export default function AnnouncementsPage() {
   });
 
   const fetch = async () => {
-  const res = await axios.get('/api/announcements');
+  const res = await axios.get('http://localhost:3000/api/announcements');
   const announcements = Array.isArray(res.data)
     ? res.data
     : res.data.announcements || [];
@@ -26,13 +26,13 @@ export default function AnnouncementsPage() {
   useEffect(() => { fetch(); }, []);
 
   const handleSubmit = async () => {
-    await axios.post('/api/announcements', form);
+    await axios.post('http://localhost:3000/api/announcements', form);
     fetch();
     setForm({ title: '', content: '', targetAudience: 'Student' });
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`/api/announcements/${id}`);
+    await axios.delete(`http://localhost:3000/api/announcements/${id}`);
     fetch();
   };
 

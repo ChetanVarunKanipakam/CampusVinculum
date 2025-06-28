@@ -1,9 +1,17 @@
 import announcementModel from "../models/announcement.model.js";
+import mongoose from "mongoose";
 //create announcement
 export const createAnnouncement=async(req,res)=>{
    
+  const {id}=req.user;
    try{
+    console.log({...req.body,
+        postedBy: new mongoose.Types.ObjectId(String(id)),
+        postedDate: new Date(),
+        modifiedDate: new Date()
+    })
      const ann=await announcementModel.create({...req.body,
+        postedBy: id,
         postedDate: new Date(),
         modifiedDate: new Date()
     });

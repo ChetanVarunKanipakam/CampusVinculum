@@ -54,15 +54,15 @@ export const updateJobPosting=async(req,res)=>{
 
 
 export const getJobsByPoster = async (req, res) => {
-  try {
-    const { postedBy } = req.query;
 
-    if (!postedBy) {
+  try {
+    const {id} = req.user;
+    if (!id) {
       return res.status(400).json({ message: "Missing 'postedBy' query parameter" });
     }
 
     // Dynamically filter using postedBy
-    const jobs = await JobPosting.find({ postedBy })
+    const jobs = await jobPostingModel.find({ postedBy:id })
       .populate('postedBy', 'name email')  // optional: include name and email from Alumni
       .exec();
 

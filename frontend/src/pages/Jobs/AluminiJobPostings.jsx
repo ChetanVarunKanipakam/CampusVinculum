@@ -7,16 +7,15 @@ const JobPostings = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const token = localStorage.getItem("campusvinculum");
   useEffect(() => {
     async function fetchAll() {
       try {
         setLoading(true);
         const u = await GetUserData();
         setUser(u);
-
-        const res = await axios.get("http://localhost:3000/api/jobs/jobPostings?postedBy=${user._id}"); // adjust route if needed
-        setJobs(res.data);
+        const res = await axios.get("http://localhost:3000/api/jobPostings",{ headers: { Authorization: `Bearer ${token}` } }); // adjust route if needed
+        setJobs(res);
       } catch (err) {
         console.error(err);
         setError("Failed to fetch data. Please try again.");

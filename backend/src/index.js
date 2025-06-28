@@ -29,8 +29,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.use('/api/timetables', timetableRoutes);
-app.use('/api/exams', examRoutes);
+app.use('/api/timetable', timetableRoutes);
+app.use('/api/examschedule', examRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/alumini', alumniRoutes);

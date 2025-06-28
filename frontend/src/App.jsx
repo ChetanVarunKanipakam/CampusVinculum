@@ -26,10 +26,13 @@ import AdminDashboard from './pages/Dashboard/AdminDashboard.jsx';
 import DepartmentsPage from './pages/AdminDepartements/AdminDepartements.jsx';
 import UsersPage from './pages/AdminUsersPage/AdminUser.jsx';
 import AnnouncementsPage from './pages/AdminAnnouncements/AdminAnnouncements.jsx';
-
-
+import AluminiDashboard from './pages/Dashboard/Alumini.Dashboard.jsx';
+import AluminiJobPostings from './pages/Jobs/AluminiJobPostings.jsx';
+import AluminiJobs from './pages/Jobs/AluminiJobs.jsx';
+import FacultySidebarMenu from './common/Sidebar/FacultySidebar.jsx';
 
 import { jwtDecode } from 'jwt-decode';
+import { use } from 'react';
 
 function App() {
   const [auth, setAuth] = useState(null);
@@ -48,7 +51,7 @@ function App() {
         break;
         case 'Admin': navigate("/admin");
       }
-      
+      setuserRole(user.role);
       setAuth(login);
     } else {
       navigate("/login");
@@ -61,7 +64,7 @@ function App() {
      <div className="w-screen h-screen flex flex-col overflow-hidden">
       {/* Top Navbar */}
       <header className="h-16 fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
-        {/* <Navbar /> */}
+        <Navbar />
       </header>
 
       {auth?(<div className="flex flex-1 pt-16 overflow-hidden">

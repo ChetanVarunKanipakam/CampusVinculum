@@ -25,21 +25,16 @@ const AddClubMemberForm = () => {
 
     try {
       // Step 1: Get Club ID from club name
-      const clubRes = await axios.get(`/api/clubs/by-name/${clubName}`);
+      const clubRes = await axios.get(`http://localhost:3000/api/clubs/name/${clubName}`);
       const club = clubRes.data;
 
       if (!club || !club._id) return alert("Club not found.");
 
       // Step 2: Get User ID from email
-      const userRes = await axios.get(`/api/users/by-email/${userEmail}`);
-      const foundUser = userRes.data;
-
-      if (!foundUser || !foundUser._id) return alert("User not found.");
-
-      // Step 3: Submit membership
-      await axios.post("/api/clubMemberships", {
+      
+      await axios.post("http://localhost:3000/api/clubMemberships", {
         clubID: club._id,
-        userID: foundUser._id,
+        user: user.email,
         role,
         joinDate: new Date(),
       });

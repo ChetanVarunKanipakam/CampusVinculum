@@ -1,15 +1,20 @@
 import clubMembershipModel from "../models/clubMembership.model.js";
+import RoomUser from "../utils/socket.js";
 //add membership
 export const addMembership = async (req, res) => {
   try {
-    const { clubID, userID, role } = req.body;
+    const { clubID, useremail, role } = req.body;
     const newMembership = new clubMembershipModel({
       clubID,
-      userID,
+      userID: useremail,
       role,
       joinDate: new Date()
     });
     const saved = await newMembership.save();
+    await RoomUser.insertOne(
+      { room: 'clubsecretkey' + clubID, username: useremail },
+      { upsert: true }
+    );
     res.status(201).json(saved);
   } catch (err) {
     console.error('Error adding membership:', err);

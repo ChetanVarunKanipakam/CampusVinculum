@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Box,
   Typography,
@@ -29,6 +29,8 @@ import SidebarMenu from "../../common/sidebar/Sidebar";
 import NotificationButton from "../../common/NotificationButton/NotificationButton";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import axios from "axios";
+import { GetUserData } from "../../utils/userApi";
 
 const icons = [
   <CodeIcon />, <PublicIcon />, <MusicNoteIcon />, <FitnessCenterIcon />,
@@ -71,50 +73,38 @@ const clubSections = [
   }
 ];
 
-const ClubCard = ({ club, onClick, icon, background }) => (
+const ClubCard = ({ club, onClick, background }) => (
   <motion.div
-    whileHover={{ scale: 1.06 }}
+    whileHover={{ scale: 1.05 }}
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.4 }}
+    transition={{ duration: 0.3 }}
   >
-    <Card
-      elevation={6}
+    <Box
       onClick={onClick}
       sx={{
         width: 280,
-        height: 280,
+        height: 250,
         borderRadius: 4,
         overflow: "hidden",
-        position: "relative",
         cursor: "pointer",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "flex-end",
-        boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
-        transition: "all 0.3s ease",
         backgroundImage: `url(${background})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        color: "white",
-        textShadow: "1px 1px 2px rgba(0,0,0,0.7)"
+        color: "#fff",
+        textShadow: "1px 1px 3px rgba(0,0,0,0.7)",
+        p: 2,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-end",
+        boxShadow: 6,
       }}
     >
-      <CardContent sx={{ textAlign: "center", background: "transparent", p: 2 }}>
-        <Avatar sx={{ bgcolor: "white", color: "black", width: 40, height: 40, mx: "auto", mb: 1 }}>
-          {icon}
-        </Avatar>
-        <Typography variant="h6" fontWeight={700} noWrap>
-          {club.name}
-        </Typography>
-        <Typography variant="body2" noWrap>
-          {club.description}
-        </Typography>
-        <Button variant="contained" size="small" sx={{ mt: 1 }}>
-          Explore
-        </Button>
-      </CardContent>
-    </Card>
+      <Typography variant="h6" fontWeight={700}>
+        {club.name}
+      </Typography>
+      <Typography variant="body2">{club.description}</Typography>
+    </Box>
   </motion.div>
 );
 
@@ -122,69 +112,88 @@ const Clubs = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [search, setSearch] = useState("");
+    const [clubs, setClubs] = useState([]);
+      const [user,setUser]=useState(null);
+    
+     const userDataCalling = async () => {
+    const data = await GetUserData();
+    console.log(data);
+    setUser(data);
+  
+    if (data?.email) {
+      fetchClubs(data.email);
+    }
+  };
+  
+  const fetchClubs = async (username) => {
+    try {
+      const res = await axios.get(`http://localhost:3000/api/clubs/${encodeURIComponent(username)}`);
+      setClubs(res.data.clubs || []);
+      if(res.message){
+        alert(res.message);
+      }
+    } catch (error) {
+      console.error("Failed to fetch clubs", error);
+    }
+  };
+  
+    
+      useEffect(()=>{
+        userDataCalling()
+    },[]);
+  
+  
+    
+  
+  
+    const filtered = clubs.filter(
+      c =>
+        c.name.toLowerCase().includes(search.toLowerCase()) ||
+        c.description.toLowerCase().includes(search.toLowerCase())
+    );
+  
+
 
   return (
-    <>
-      <div className="animate-fade-in duration-500">
+    <>      
       <NotificationButton />
-      <Box sx={{ width: "100%", maxWidth: "100%", px: { xs: 2, md: 6 }, py: 4 }}>
-        <Box sx={{ flexGrow: 1, p: 5, overflowY: "auto", bgcolor: "#eef2ff" }}>
-          <Box display="flex" justifyContent="center" alignItems="center" mb={4}>
+        {/* Main Content */}
+        <Box flexGrow={1} p={5} sx={{ overflowY: 'auto', bgcolor: '#f0f4ff' }}>
+
+          {/* Search Bar */}
+          <Box display="flex" justifyContent="center" mb={4}>
             <InputBase
               placeholder="Search clubs..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               sx={{
-                px: 2,
-                py: 1,
-                width: 320,
-                bgcolor: "white",
-                borderRadius: 5,
+                px: 2, py: 1, width: 320,
+                bgcolor: "white", borderRadius: 5,
                 boxShadow: 2
               }}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              startAdornment={
-                <IconButton>
-                  <SearchIcon />
-                </IconButton>
-              }
+              startAdornment={<IconButton><SearchIcon /></IconButton>}
             />
           </Box>
 
-          {clubSections.map(({ title, clubs }, idx) => (
-            <Box key={idx} mb={5}>
-              <Typography
-                variant="h4"
-                color="primary"
-                fontWeight={800}
-                textAlign="center"
-                mb={3}
-                sx={{ letterSpacing: 1.5 }}
-              >
-                {title}
-              </Typography>
-              <Grid container spacing={4} justifyContent="center">
-                {clubs
-                  .filter((club) =>
-                    club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    club.description.toLowerCase().includes(searchTerm.toLowerCase())
-                  )
-                  .map((club, index) => (
-                    <Grid item key={index}>
-                      <ClubCard
-                        club={club}
-                        icon={icons[index % icons.length]}
-                        background={backgrounds[index]}
-                        onClick={() => navigate(`/clubs/${club.name}`)}
-                      />
-                    </Grid>
-                  ))
-                }
+          
+          {/* Club Cards */}
+          <Typography variant="h4" textAlign="center" fontWeight={800} mb={3}>
+           My Clubs
+          </Typography>
+          {filtered?<h1>No clubs Joined..</h1>:
+          <Grid container spacing={4} justifyContent="center">
+            {filtered.map((club, i) => (
+              <Grid item key={i}>
+                <ClubCard
+                  club={club}
+                  background={cardBackgrounds[i % cardBackgrounds.length]}
+                  onClick={() => navigate(`/clubs/${club.name}`)}
+                />
               </Grid>
-            </Box>
-          ))}
+            ))}
+          </Grid>}
         </Box>
-      </Box>
-      </div>
     </>
   );
 };
