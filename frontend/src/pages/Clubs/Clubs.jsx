@@ -129,6 +129,7 @@ const Clubs = () => {
   const fetchClubs = async (username) => {
     try {
       const res = await axios.get(`http://localhost:3000/api/clubs/${encodeURIComponent(username)}`);
+      console.log(res);
       setClubs(res.data.clubs || []);
       if(res.message){
         alert(res.message);
@@ -181,13 +182,13 @@ const Clubs = () => {
           <Typography variant="h4" textAlign="center" fontWeight={800} mb={3}>
            My Clubs
           </Typography>
-          {filtered?<h1>No clubs Joined..</h1>:
+          {!filtered?<h1>No clubs Joined..</h1>:
           <Grid container spacing={4} justifyContent="center">
             {filtered.map((club, i) => (
               <Grid item key={i}>
                 <ClubCard
                   club={club}
-                  background={cardBackgrounds[i % cardBackgrounds.length]}
+                  background={backgrounds[i % backgrounds.length]}
                   onClick={() => navigate(`/clubs/${club.name}`)}
                 />
               </Grid>

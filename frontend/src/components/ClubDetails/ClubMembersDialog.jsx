@@ -5,7 +5,7 @@ const ClubMembersDialog = ({ open, onClose, members }) => (
     <DialogTitle>Group Members</DialogTitle>
     <DialogContent>
       {members.map((member, i) => (
-        <Typography key={i} sx={{ my: 1 }}>• {member}</Typography>
+        <Typography key={i} sx={{ my: 1 }}>• {member.userID}</Typography>
       ))}
     </DialogContent>
     <DialogActions>

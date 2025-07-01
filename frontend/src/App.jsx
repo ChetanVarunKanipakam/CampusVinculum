@@ -1,9 +1,8 @@
-import { useEffect,useState } from 'react'
-
-import './App.css'
+import { useEffect, useState } from 'react';
+import './App.css';
 import Navbar from './common/navbar/navbar.jsx';
 import SidebarMenu from './common/sidebar/Sidebar.jsx';
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import Signup from './pages/Signup/Signup.jsx';
 import Login from './pages/Login/Login.jsx';
 import ErrorPage from './pages/ErrorPage/ErrorPage.jsx';
@@ -32,48 +31,66 @@ import AluminiJobs from './pages/Jobs/AluminiJobs.jsx';
 import FacultySidebarMenu from './common/Sidebar/FacultySidebar.jsx';
 
 import { jwtDecode } from 'jwt-decode';
-import { use } from 'react';
 
 function App() {
   const [auth, setAuth] = useState(null);
-  const [userRole,setuserRole]=useState(null);
+  const [user1, setuser1] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
     const login = localStorage.getItem("campusvinculum");
-
-    const user = login ? jwtDecode(login) : null; 
+    const user = login ? jwtDecode(login) : null;
 
     if (login) {
-      switch(user.role){
-        case 'Student': navigate("/dashboard");
-        break;
-        case 'Faculty': navigate("/faculty/dashboard");
-        break;
-        case 'Admin': navigate("/admin");
+      switch (user.role) {
+        case 'Admin':
+          navigate("/admin");
+          break;
+        default:
+          break;
       }
-      setuserRole(user.role);
+      setuser1(user);
       setAuth(login);
     } else {
       navigate("/login");
     }
   }, []);
 
+  const isDiscussionRoute = location.pathname === "/discussions";
+  const isclubDetails = location.pathname.startsWith("/clubs/");
+  if (!auth) {
+    return (
+      <Routes>
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/user/page_not_found" element={<ErrorPage />} />
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+    );
+  }
 
-  return ( 
+  // Show full screen Discussions component
+  if (isDiscussionRoute ) {
+    return <Discussions />;
+  }
 
-     <div className="w-screen h-screen flex flex-col overflow-hidden">
-      {/* Top Navbar */}
+  if (isclubDetails ) {
+    return (
+    <Routes>
+      <Route path="/clubs/:clubName" element={<ClubDetails />} />
+    </Routes>
+  );
+  }
+  return (
+    <div className="w-screen h-screen flex flex-col overflow-hidden">
       <header className="h-16 fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
         <Navbar />
       </header>
-
-      {auth?(<div className="flex flex-1 pt-16 overflow-hidden">
-        {/* Sidebar - Fixed on large screens, scrollable */}
+      <div className="flex flex-1 pt-16 overflow-hidden">
         <aside className="hidden lg:flex w-64 fixed top-16 bottom-0 left-0 overflow-y-auto z-40 shadow-md">
-          {userRole==="Student"?<SidebarMenu />:<FacultySidebarMenu/>}
+          {user1?.role === "Student" ? <SidebarMenu /> : <FacultySidebarMenu />}
         </aside>
-
-        {/* Main Content - Scrollable */}
         <main className="flex-1 ml-0 lg:ml-64 overflow-y-auto bg-[#f0f0fa] px-4 py-6">
           <Routes>
             <Route path="/admin" element={<AdminDashboard />}>
@@ -82,7 +99,6 @@ function App() {
               <Route path="users" element={<UsersPage />} />
               <Route path="announcements" element={<AnnouncementsPage />} />
             </Route>
-
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/clubs" element={<Clubs />} />
             <Route path="/chatbot" element={<Chatbot />} />
@@ -91,39 +107,25 @@ function App() {
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/events" element={<Events />} />
             <Route path="/notifications" element={<Notification />} />
-            <Route path="/clubs/:clubName" element={<ClubDetails />} />
+            
             <Route path="/events/:eventName" element={<EventDetails />} />
-            <Route path="/discussions" element={<Discussions />} />
             <Route path="/faculty" element={<FacultyDashboard />} />
             <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
             <Route path="/faculty/clubs" element={<FacultyClubs />} />
             <Route path="/faculty/schedules" element={<FacultySchedules />} />
             <Route path="/faculty/announcement" element={<FacultyAnnouncements />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/alumini/jobPostings" element={<AluminiJobPostings/>}/>
+            <Route path="/alumini/jobPostings" element={<AluminiJobPostings />} />
             <Route path="/" element={<Dashboard />} />
-            <Route path="/alumini" element={<AluminiDashboard/>}/>
-            <Route path="/alumini/dashboard" element={<AluminiDashboard/>}/>
-            <Route path="/alumini/chatbot" element={<Chatbot/>}/>
-            <Route path="/alumini/jobs" element={<AluminiJobs/>}/>
+            <Route path="/alumini" element={<AluminiDashboard />} />
+            <Route path="/alumini/dashboard" element={<AluminiDashboard />} />
+            <Route path="/alumini/chatbot" element={<Chatbot />} />
+            <Route path="/alumini/jobs" element={<AluminiJobs />} />
           </Routes>
         </main>
-      </div>):
-         (<Routes>
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/user/page_not_found" element={<ErrorPage />} />
-            <Route path="*" element={<ErrorPage />} />
-          </Routes>
-      )}
+      </div>
     </div>
-   
-          
-
-        
- 
-            
-      );
+  );
 }
 
 export default App;

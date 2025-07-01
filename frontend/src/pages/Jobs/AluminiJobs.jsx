@@ -1,4 +1,4 @@
-import React,{useState} from "react"
+import React,{useState,useEffect} from "react"
 import {
   Box,
   Button,
@@ -8,9 +8,10 @@ import {
   Container,
 } from '@mui/material';
 import axios from "axios";
+import { GetUserData } from "../../utils/userApi";
 
 const AluminiJobs = ()=>{
-
+  const token=localStorage.getItem("campusvinculum");
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -19,7 +20,19 @@ const AluminiJobs = ()=>{
     postedBy: '', // ObjectId string of alumni
     applicationDeadline: "29-06-2025",
   });
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(true);
 
+  const userDataCalling = async () => {
+      const data = await GetUserData();
+      console.log(data);
+      setUserData(data);
+      setLoading(false);
+    };
+  
+    useEffect(() => {
+      userDataCalling();
+    }, []);
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -30,7 +43,11 @@ const AluminiJobs = ()=>{
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3000/api/jobPostings', formData);
+      if(loading){
+        alert("fetching user please wait");
+      }
+      formData.postedBy=userData.roleDetails._id;
+      const res = await axios.post('http://localhost:3000/api/jobPostings', formData,{ headers: { Authorization: `Bearer ${token}` } });
       alert('Job posted successfully');
     } catch (err) {
       console.error(err);
@@ -82,15 +99,7 @@ const AluminiJobs = ()=>{
           onChange={handleChange}
           required
         />
-        <TextField
-          label="Alumni ID"
-          name="postedBy"
-          fullWidth
-          margin="normal"
-          value={formData.postedBy}
-          onChange={handleChange}
-          required
-        />
+
         
  
         <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 3 }}>

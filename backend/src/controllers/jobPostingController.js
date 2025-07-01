@@ -18,6 +18,23 @@ catch(err)
 }
 };
 
+
+export const getAllJobs = async (req, res) => {
+  try {
+    const jobs = await jobPostingModel.find()
+        .populate({
+              path: 'postedBy',             
+              populate: {
+                path: 'userID',              
+                select: 'name email graduationYear', 
+              },
+            });
+  
+    res.status(200).json(jobs);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch jobs', error });
+  }
+};
 //delete post
 export const deletePosting=async(req,res)=>{
     try{

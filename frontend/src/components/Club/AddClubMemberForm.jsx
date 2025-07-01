@@ -34,7 +34,7 @@ const AddClubMemberForm = () => {
       
       await axios.post("http://localhost:3000/api/clubMemberships", {
         clubID: club._id,
-        user: user.email,
+        user: userEmail,
         role,
         joinDate: new Date(),
       });

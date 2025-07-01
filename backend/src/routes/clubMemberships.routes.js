@@ -9,6 +9,6 @@ import {
 
 const router = express.Router();
 router.post('/', addMembership);
-router.get('/membership/club/:clubID', getMembersByClub);
+router.get('/:clubID', getMembersByClub);
 
 export default router;

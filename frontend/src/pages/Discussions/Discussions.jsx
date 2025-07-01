@@ -3,16 +3,16 @@ import socket from '@/socket.js';
 import PrivateChat from './PrivateChat.jsx';
 import JoinRoomForm from './JoinRoomForm.jsx';
 import {
-  Box, Typography, TextField, Button, IconButton, List,
-  ListItem, ListItemText, Divider, Badge, Tooltip, Paper
+  Box, Typography, TextField, Button, IconButton, List, ListItem, ListItemText, ListItemButton, Badge , Divider, Tooltip, Paper
 } from '@mui/material';
 import { Group, Brightness4, Brightness7 } from '@mui/icons-material';
+import { GetUserData } from '../../utils/userApi.js';
 
 export default function Discussions({username1,room1,joined1}) {
   const [username, setUsername] = useState('');
   const [room, setRoom] = useState('');
   const [joined, setJoined] = useState(false);
-
+  const [email, setEmail] = useState('');
   const [msg, setMsg] = useState('');
   const [messages, setMessages] = useState([]);
   const [usersInRoom, setUsersInRoom] = useState([]);
@@ -20,19 +20,34 @@ export default function Discussions({username1,room1,joined1}) {
   const [typingMsg, setTypingMsg] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+
 
   const refEnd = useRef();
   const typingTimeout = useRef();
  
+   const userDataCalling = async () => {
+    const data = await GetUserData();
+    if (data?.email && data?.name) {
+      setEmail(data.email);
+      setUsername(data?.name);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
-  if (username1) setUsername(username1);
-  if (room1) setRoom(room1);
-  if (joined1){ 
-    setJoined(joined1);
-  }
-  console.log(username,room,joined);
-  joinRoom()
-}, [username, room, joined]);
+    userDataCalling();
+  }, []);
+
+  useEffect(() => {
+  if (username1 && room1 && joined1) {
+    setUsername(username1);
+    setRoom(room1);
+    setJoined(true);
+    socket.emit('join_room', { username: username1, room: room1 });
+    }
+  }, [username1, room1, joined1]);
 
 
   useEffect(() => {
@@ -56,12 +71,13 @@ export default function Discussions({username1,room1,joined1}) {
   useEffect(() => refEnd.current?.scrollIntoView({ behavior: 'smooth' }), [messages]);
 
   const joinRoom = () => {
-    if (!username.trim() || !room.trim()) return;
-    socket.emit('join_room', { username, room });
+    if (!email.trim() || !room.trim()) return;
+    socket.emit('join_room', { username:email, room });
     setJoined(true);
   };
 
   const sendMessage = () => {
+    console.log(msg);
     if (!msg.trim()) return;
     socket.emit('send_message', { text: msg });
     setMsg('');
@@ -80,7 +96,7 @@ export default function Discussions({username1,room1,joined1}) {
 
   return(
   <>{!joined?<JoinRoomForm
-        username={username}
+        username={email}
         room={room}
         darkMode={darkMode}
         setUsername={setUsername}
@@ -88,7 +104,7 @@ export default function Discussions({username1,room1,joined1}) {
         joinRoom={joinRoom}
         setDarkMode={setDarkMode}
       />:
-    <Box height="calc(100vh - 64px)" display="flex" bgcolor={bgColor}>
+    <Box height="calc(100vh - 64px)" width="100%" display="flex" bgcolor={bgColor}>
       {/* Sidebar */}
       <Box width={300} p={2} bgcolor={darkMode ? '#1e1e1e' : '#fff'} borderRight="1px solid #ccc">
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -102,19 +118,22 @@ export default function Discussions({username1,room1,joined1}) {
         <Divider sx={{ mb: 1 }} />
         <List dense>
           {usersInRoom.map(u => {
-            const displayName = u === username ? `${u} (You)` : u;
+            const displayName = u === email ? `${u} (You)` : u;
             return (
-              <ListItem key={u} selected={u === selectedUser} onClick={() => setSelectedUser(u)} button>
-                <Badge
-                  color={onlineStatus[u] ? 'success' : 'default'}
-                  variant="dot"
-                  sx={{ mr: 1 }}
-                />
-                <ListItemText primary={displayName} />
+              <ListItem key={u} disablePadding selected={u === selectedUser}>
+                <ListItemButton onClick={() => setSelectedUser(u)}>
+                  <Badge
+                    color={onlineStatus[u] ? 'success' : 'default'}
+                    variant="dot"
+                    sx={{ mr: 1 }}
+                  />
+                  <ListItemText primary={displayName} />
+                </ListItemButton>
               </ListItem>
             );
           })}
         </List>
+
         {selectedUser && (
           <Button fullWidth onClick={() => setSelectedUser(null)} sx={{ mt: 2 }}>← Back</Button>
         )}
@@ -123,19 +142,18 @@ export default function Discussions({username1,room1,joined1}) {
       {/* Chat Area */}
       <Box flex={1} display="flex" flexDirection="column" p={2}>
         {selectedUser ? (
-          <PrivateChat me={username} peer={selectedUser} />
+          <PrivateChat me={email} peer={selectedUser} />
         ) : (
           <>
             <Typography variant="subtitle1" gutterBottom>
               <strong>User:</strong> {username} | <strong>Room:</strong> {room}
             </Typography>
             <Box flex={1} overflow="auto" px={1}>
-              {console.log(msg)}
               {messages.map((m, i) => (
                 <Box
                   key={i}
                   display="flex"
-                  justifyContent={m.from === username ? 'flex-end' : 'flex-start'}
+                  justifyContent={m.from === email ? 'flex-end' : 'flex-start'}
                   mb={1}
                 >
                   <Paper

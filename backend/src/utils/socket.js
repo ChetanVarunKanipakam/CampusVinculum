@@ -1,4 +1,3 @@
-// server.js
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
@@ -54,18 +53,18 @@ io.on('connection', (socket) => {
     onlineStatus[username] = true;
 
     await RoomUser.updateOne(
-      { room:"roomsecretkey"+room, username },
-      {  room:"roomsecretkey"+room, username },
+      { room, username },
+      { room, username },
       { upsert: true }
     );
 
     socket.join(room);
     socket.to(room).emit('user_joined', `${username} joined ${room}`);
 
-    const roomUsers = await RoomUser.find({ room:"roomsecretkey"+room }).distinct('username');
+    const roomUsers = await RoomUser.find({ room }).distinct('username');
     io.to(room).emit('update_user_list', { users: roomUsers, onlineStatus });
 
-    const history = await Message.find({ room:"roomsecretkey"+room, private: false })
+    const history = await Message.find({ room, private: false })
       .sort({ _id: -1 }).limit(20);
     socket.emit('load_history', history.reverse());
   });
@@ -102,7 +101,7 @@ io.on('connection', (socket) => {
     if (u) socket.to(u.room).emit('hide_typing');
   });
 
-  socket.on('leave_room', async () => {
+  socket.on('disconnect', async () => {
     const u = users[socket.id];
     if (!u) return;
 
@@ -117,4 +116,4 @@ io.on('connection', (socket) => {
 });
 
 export {io, server,app}
-export default RoomUser
+export default RoomUser;

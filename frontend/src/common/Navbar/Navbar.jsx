@@ -13,7 +13,7 @@ import { HiOutlineBriefcase } from "react-icons/hi";
 import logo from "@/assets/logo.png";
 import profPic from "@/assets/profpic.jpg";
 import { GetUserData } from "../../utils/userApi";
-
+import LogoutButton from "../../components/Logout/LogoutButton";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +58,7 @@ const Navbar = () => {
             <div className="text-sm text-gray-600">{userData.role}</div>
           </div>
         </div>
-      
+        <LogoutButton/>
 
       {/* Hamburger for mobile */}
       <button onClick={toggleSidebar} className="lg:hidden text-3xl text-blue-900">
@@ -120,6 +120,7 @@ const Navbar = () => {
               <a href="https://x.com/" target="_blank" rel="noreferrer"><BsTwitterX /></a>
             </div>
           </div>
+          <LogoutButton/>
         </div>
       </div>
     </div>
