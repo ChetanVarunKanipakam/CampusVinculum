@@ -1,5 +1,5 @@
 import React from "react";
-import AluminiSidebar from "../../common/Sidebar/AluminiSidebar";
+import AluminiSidebar from "../../common/Sidebar/aluminiSidebar";
 
 const AluminiDashboard = () =>{
     return (<AluminiSidebar/>);

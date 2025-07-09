@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography } from "@mui/material";
+import { Opacity } from "@mui/icons-material";
 
 const WelcomeText = () => {
   return (

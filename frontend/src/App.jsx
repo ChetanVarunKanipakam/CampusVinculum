@@ -25,38 +25,62 @@ import AdminDashboard from './pages/Dashboard/AdminDashboard.jsx';
 import DepartmentsPage from './pages/AdminDepartements/AdminDepartements.jsx';
 import UsersPage from './pages/AdminUsersPage/AdminUser.jsx';
 import AnnouncementsPage from './pages/AdminAnnouncements/AdminAnnouncements.jsx';
-import AluminiDashboard from './pages/Dashboard/Alumini.Dashboard.jsx';
+import AluminiDashboard from './pages/Dashboard/AluminiDashboard.jsx';
 import AluminiJobPostings from './pages/Jobs/AluminiJobPostings.jsx';
 import AluminiJobs from './pages/Jobs/AluminiJobs.jsx';
 import FacultySidebarMenu from './common/Sidebar/FacultySidebar.jsx';
+import AluminiSidebar from './common/Sidebar/aluminiSidebar.jsx';
+
 
 import { jwtDecode } from 'jwt-decode';
+import Loading from './components/Loading/Loading.jsx';
 
 function App() {
   const [auth, setAuth] = useState(null);
   const [user1, setuser1] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [loading,setLoading]= useState(false)
+
 
   useEffect(() => {
+    setLoading(true)
     const login = localStorage.getItem("campusvinculum");
     const user = login ? jwtDecode(login) : null;
 
+    // const login=false;
     if (login) {
       switch (user.role) {
+        case 'Student':
+          navigate('/dashboard');
+          break
+        case 'Alumini':
+          navigate('/alumini/dashboard');
+          break
+        case 'Faculty':
+          navigate('/faculty/dashboard');
+          break
         case 'Admin':
           navigate("/admin");
           break;
         default:
           break;
       }
+      setLoading(false)
       setuser1(user);
       setAuth(login);
     } else {
       navigate("/login");
+      setLoading(false)
     }
+    
   }, []);
 
+  if (loading) {
+    return (
+        <Loading />
+    );
+  }
   const isDiscussionRoute = location.pathname === "/discussions";
   const isclubDetails = location.pathname.startsWith("/clubs/");
   if (!auth) {
@@ -65,16 +89,25 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user/page_not_found" element={<ErrorPage />} />
-        <Route path="*" element={<ErrorPage />} />
+        <Route path="*" element={<ErrorPage/>} />
       </Routes>
     );
   }
 
-  // Show full screen Discussions component
+  
   if (isDiscussionRoute ) {
     return <Discussions />;
   }
 
+  if (user1.role=='Admin'){
+    return (<Route path="/admin" element={<AdminDashboard />}>
+              <Route index element={<DepartmentsPage />} />
+              <Route path="departments" element={<DepartmentsPage />} />
+              <Route path="users" element={<UsersPage />} />
+              <Route path="announcements" element={<AnnouncementsPage />} />
+            </Route>);
+
+  }
   if (isclubDetails ) {
     return (
     <Routes>
@@ -89,16 +122,10 @@ function App() {
       </header>
       <div className="flex flex-1 pt-16 overflow-hidden">
         <aside className="hidden lg:flex w-64 fixed top-16 bottom-0 left-0 overflow-y-auto z-40 shadow-md">
-          {user1?.role === "Student" ? <SidebarMenu /> : <FacultySidebarMenu />}
+          { (user1?.role === "Student")? <SidebarMenu /> : (user1?.role === "Faculty")? <FacultySidebarMenu /> : <AluminiSidebar/>}
         </aside>
         <main className="flex-1 ml-0 lg:ml-64 overflow-y-auto bg-[#f0f0fa] px-4 py-6">
           <Routes>
-            <Route path="/admin" element={<AdminDashboard />}>
-              <Route index element={<DepartmentsPage />} />
-              <Route path="departments" element={<DepartmentsPage />} />
-              <Route path="users" element={<UsersPage />} />
-              <Route path="announcements" element={<AnnouncementsPage />} />
-            </Route>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/clubs" element={<Clubs />} />
             <Route path="/chatbot" element={<Chatbot />} />

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import img1 from "@/assets/rgukt.jpg";
 import img2 from "@/assets/rgukt1.jpg";
-import img3 from "@/assets/rgukt2.jpg";
+import img3 from "@/assets/rgukt2.jpeg";
 
 const images = [img1, img2, img3];
 

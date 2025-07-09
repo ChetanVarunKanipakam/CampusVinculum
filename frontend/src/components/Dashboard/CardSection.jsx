@@ -70,14 +70,8 @@ const CardSection = ({ skillsset = [], achievementsset = [], clubs = [], clubNot
         { title: "Achievements", icon: <EmojiEventsIcon color="success" />, items: achievements.map((a) => [a, <Box display="flex" alignItems="center"><AddCircleOutlineIcon fontSize="small" color="success" /><IconButton size="small" onClick={() => handleDeleteAchievement(a)}><DeleteIcon fontSize="small" color="error" /></IconButton></Box>]), inputValue: newAchievement, onInputChange: (e) => setNewAchievement(e.target.value), onAdd: handleAddAchievement },
         { title: "Clubs", icon: <GroupIcon color="secondary" />, items: clubs.map((c) => [c, <GroupIcon fontSize="small" />]) },
         { title: "Club Notifications", icon: <NotificationsActiveIcon color="error" />, items: clubNotifs.map((n) => [n, <NotificationsActiveIcon fontSize="small" />]) }].map((card, index) => (
-        <motion.div
-          key={index}
-          whileHover={{ scale: 1.05, boxShadow: "0 4px 20px rgba(0, 123, 255, 0.2)" }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ type: "spring", stiffness: 300 }}
-        >
+      
           <DashboardCard {...card} />
-        </motion.div>
       ))}
     </Box>
   );
