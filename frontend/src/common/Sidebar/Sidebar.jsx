@@ -37,7 +37,7 @@ const SidebarMenu = () => {
 
   return (
   <>
-    <div className="hidden lg:flex flex-col w-60 h-screen fixed top-20 left-0 z-30 p-5 bg-[#95c0ff] text-white shadow-2xl overflow-y-auto">
+    <div className="hidden lg:flex flex-col w-60 h-screen fixed top-20 left-0 z-30 p-5 bg-[#95c0ff] opacity-80 text-white shadow-2xl overflow-y-auto">
   
   {/* Navigation Links */}
   <nav className="flex flex-col gap-3">

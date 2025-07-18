@@ -12,7 +12,8 @@ const DashboardCard = ({ title, icon, items = [], itemIcon, inputValue, onInputC
       minWidth: 300,
       maxWidth: 320,
       borderRadius: 4,
-      background: "#ffffff",
+      background: "#95c0ff",
+      opacity: 0.8,
       flexShrink: 0,
       transition: "transform 0.3s ease, box-shadow 0.3s ease",
       "&:hover": {

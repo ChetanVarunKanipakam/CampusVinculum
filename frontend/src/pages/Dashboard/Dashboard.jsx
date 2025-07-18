@@ -17,11 +17,11 @@ const Dashboard = () => {
 
   const [currentImage, setCurrentImage] = useState(0);
   
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setCurrentImage((prev) => (prev + 1) % images.length);
-      }, 3000);
-      return () => clearInterval(interval);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(interval);
     }, []);
   useEffect(() => {
     fetchCardsInfo();
@@ -36,12 +36,12 @@ const Dashboard = () => {
         clubs: data.clubs || [],
         clubNotifs: data.clubNotifications || [],
       });
-    } catch (err) {
+    }catch (err) {
       console.error(err);
     }
   };
 
-  return (
+  return (   
     <>
     <div
         className="animate-fade-in duration-500 bg-cover bg-center min-h-screen"

@@ -100,12 +100,14 @@ function App() {
   }
 
   if (user1.role=='Admin'){
-    return (<Route path="/admin" element={<AdminDashboard />}>
+    return (
+            <Routes>
+            <Route path="/admin" element={<AdminDashboard />}>
               <Route index element={<DepartmentsPage />} />
               <Route path="departments" element={<DepartmentsPage />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="announcements" element={<AnnouncementsPage />} />
-            </Route>);
+            </Route></Routes>);
 
   }
   if (isclubDetails ) {
