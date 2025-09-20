@@ -5,7 +5,7 @@ import Admin from '../models/admin.model.js';
 import Alumni from '../models/alumini.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
+import { fetchRoleData } from '../utils/fetchRoleData.js';
 // Login
 export const login = async (req, res) => {
   try {
@@ -22,8 +22,9 @@ export const login = async (req, res) => {
       process.env.JWT_SECRET || 'your_jwt_secret',
       { expiresIn: "1d" }
     );
+    const roleDetails = await fetchRoleData(user);
 
-    res.status(200).json({ token, user });
+    res.status(200).json({ token, user: { ...user.toObject(), roleDetails } });
   } catch (error) {
     console.error("Login Error:", error);
     res.status(500).json({ message: "Server error during login" });

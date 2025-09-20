@@ -34,6 +34,7 @@ import AluminiSidebar from './common/Sidebar/aluminiSidebar.jsx';
 
 import { jwtDecode } from 'jwt-decode';
 import Loading from './components/Loading/Loading.jsx';
+import ProfileComponent from './pages/Profile/Profile.jsx';
 
 function App() {
   const [auth, setAuth] = useState(null);
@@ -47,7 +48,7 @@ function App() {
     setLoading(true)
     const login = localStorage.getItem("campusvinculum");
     const user = login ? jwtDecode(login) : null;
-
+    console.log(auth)
     // const login=false;
     if (login) {
       switch (user.role) {
@@ -66,6 +67,7 @@ function App() {
         default:
           break;
       }
+      console.log(user);
       setLoading(false)
       setuser1(user);
       setAuth(login);
@@ -102,8 +104,9 @@ function App() {
   if (user1.role=='Admin'){
     return (
             <Routes>
-            <Route path="/admin" element={<AdminDashboard />}>
-              <Route index element={<DepartmentsPage />} />
+            <Route path="/admin" element={<AdminDashboard user={user1}/>}>
+              <Route index element={<ProfileComponent/>} />
+              <Route path="profile" element={<ProfileComponent/>}/>
               <Route path="departments" element={<DepartmentsPage />} />
               <Route path="users" element={<UsersPage />} />
               <Route path="announcements" element={<AnnouncementsPage />} />
@@ -128,6 +131,7 @@ function App() {
         </aside>
         <main className="flex-1 ml-0 lg:ml-64 overflow-y-auto bg-[#f0f0fa] px-4 py-6">
           <Routes>
+            <Route path="/profile" element={<ProfileComponent/>}/>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/clubs" element={<Clubs />} />
             <Route path="/chatbot" element={<Chatbot />} />

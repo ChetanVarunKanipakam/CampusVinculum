@@ -8,6 +8,7 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SchoolIcon from "@mui/icons-material/School";
 import GroupsIcon from "@mui/icons-material/Groups";
 import CampaignIcon from "@mui/icons-material/Campaign";
+import Navbar from "../../common/navbar/navbar.jsx";
 
 const QuickActionCard = ({ icon, title, description, onClick }) => (
   <Paper elevation={6} sx={{ p: 3, borderRadius: 4, textAlign: "center" }}>
@@ -25,6 +26,7 @@ const AdminDashboard = () => {
 
   return (
     <>
+      <Navbar/>
       <NotificationButton />
       <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
         

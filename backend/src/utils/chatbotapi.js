@@ -11,5 +11,4 @@ export default async function generateres(query){
         console.error("Error summarizing the text:", error);
         throw error;
       }
-
 }
