@@ -1,4 +1,4 @@
-import eventform from "./eventform";
+import EventForm from "./EventForm";
 
 export default function EventPage() {
   return (

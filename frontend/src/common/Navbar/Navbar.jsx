@@ -11,7 +11,8 @@ import { BsRobot, BsTwitterX } from "react-icons/bs";
 import { AiOutlineCalendar } from "react-icons/ai";
 import { HiOutlineBriefcase } from "react-icons/hi";
 import logo from "@/assets/logo.png";
-import profPic from "@/assets/profpic.jpg";
+import profPic from "@/assets/profPic.jpg";
+import defaultPic from "@/assets/default-avatar.jpg";
 import { GetUserData } from "../../utils/userApi";
 import LogoutButton from "../../components/Logout/LogoutButton";
 
@@ -49,7 +50,7 @@ const Navbar = () => {
       </div>
         <div className="hidden md:flex items-center justify-items-end gap-3">
           <Link to="/profile" className="w-14 h-14 rounded-full overflow-hidden border-2 border-blue-600 shadow-lg">
-            <img src={profPic} alt={userData.name} className="w-full h-full object-cover" />
+            <img src={defaultPic} alt={userData.name} className="w-full h-full object-cover" />
           </Link>
           <div>
             <Link to="/profile" className="text-xl font-semibold text-blue-900 hover:underline">
