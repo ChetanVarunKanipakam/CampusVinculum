@@ -24,79 +24,55 @@ const Chatbot = () => {
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef(null);
 
-  function formatSocketText(rawText) {
-      const lines = rawText.trim().split('\n');
-      const formattedLines = [];
-      let inCodeBlock = false;
+  function convertMarkdownToText(markdownText) {
+  if (!markdownText) {
+    return "";
+  }
 
-      for (let rawLine of lines) {
-        let line = rawLine.trimEnd();
+  let plainText = markdownText;
 
-        // Headings (e.g., Part 1, Part 2)
-        if (/^\s*\*\*Part \d+:.*\*\*/.test(line)) {
-          line = line.replace(/\*\*(Part \d+:.*?)\*\*/, '## 🚀 $1');
-          formattedLines.push(line);
-          continue;
-        }
+  // 1. Remove fenced code blocks (```...```)
+  plainText = plainText.replace(/```[\s\S]*?```/g, '');
 
-        // Subsections (e.g., **TCP**, **UDP**)
-        if (/^\s*\*\*.*\*\*$/.test(line)) {
-          line = line.replace(/\*\*(.*?)\*\*/, '### 🔹 $1');
-          formattedLines.push(line);
-          continue;
-        }
+  // 2. Remove inline code (`...`)
+  plainText = plainText.replace(/`([^`]+)`/g, '$1');
 
-        // Bullet points
-        if (line.trim().startsWith("* ")) {
-          line = "- " + line.trim().slice(2);
-          formattedLines.push(line);
-          continue;
-        }
+  // 3. Remove headings (e.g., ## 🚀 Title)
+  // This removes the #, emojis, and leading spaces.
+  plainText = plainText.replace(/^(#+\s*|🚀\s*|🔹\s*)/gm, '');
 
-        // Indented bullet points (nested)
-        if (/^\s*\*/.test(line)) {
-          const indent = line.length - line.trimStart().length;
-          const dashCount = Math.floor(indent / 2);
-          line = '-'.repeat(dashCount + 1) + ' ' + line.trim().slice(1).trim();
-          formattedLines.push(line);
-          continue;
-        }
+  // 4. Remove links, keeping only the link text
+  // e.g., [Google](https://www.google.com) -> Google
+  plainText = plainText.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1');
 
-        // Port numbers with colons (e.g., * 8080: HTTP)
-        if (/^\s*\*\s*\d{2,5}:/.test(line)) {
-          const parts = line.trim().split(':');
-          formattedLines.push(`| \`${parts[0].replace('*', '').trim()}\` | ${parts[1].trim()} |`);
-          continue;
-        }
+  // 5. Remove images, keeping only the alt text
+  // e.g., ![alt text](image.png) -> alt text
+  plainText = plainText.replace(/!\[([^\]]+)\]\([^\)]+\)/g, '$1');
 
-        // Code-like lines
-        if (/^\s*(socket|bind|send|recv|connect|accept)\(/.test(line)) {
-          if (!inCodeBlock) {
-            formattedLines.push("```c");
-            inCodeBlock = true;
-          }
-          formattedLines.push(line.trim());
-          continue;
-        }
+  // 6. Remove bold and italics
+  // e.g., **bold**, *italic* -> bold, italic
+  plainText = plainText.replace(/(\*\*|__)(.*?)\1/g, '$2');
+  plainText = plainText.replace(/(\*|_)(.*?)\1/g, '$2');
 
-        // End code block on empty line
-        if (inCodeBlock && line === "") {
-          formattedLines.push("```");
-          inCodeBlock = false;
-          continue;
-        }
+  // 7. Remove list item markers
+  // e.g., * item, - item, 1. item -> item
+  plainText = plainText.replace(/^\s*[-*+]\s+|^\s*\d+\.\s+/gm, '');
 
-        // Otherwise
-        formattedLines.push(line);
-      }
+  // 8. Remove blockquotes
+  plainText = plainText.replace(/^>\s?/gm, '');
 
-      // Final cleanup
-      if (inCodeBlock) {
-        formattedLines.push("```");
-      }
+  // 9. Remove horizontal rules
+  plainText = plainText.replace(/^(-{3,}|\*{3,}|_{3,})$/gm, '');
 
-      return formattedLines.join('\n');
-    }
+  // 10. A simple way to handle tables: remove pipes and header separators
+  plainText = plainText.replace(/\|/g, ' '); // Replace pipes with spaces
+  plainText = plainText.replace(/^[-|\s]+$/gm, ''); // Remove separator lines like |---|---|
+
+  // 11. Clean up extra newlines
+  plainText = plainText.replace(/\n{2,}/g, '\n\n');
+
+  return plainText.trim();
+}
 
 
   const sendPrompt = async () => {
@@ -109,7 +85,7 @@ const Chatbot = () => {
     try {
       const response = await axios.post(apiRoutes.chatbotURI, { query: prompt });
 
-      const data =formatSocketText(response.data.responseText);
+     const data = convertMarkdownToText(response.data.responseText);
       console.log(data);
       const botReply = {
         type: "bot",

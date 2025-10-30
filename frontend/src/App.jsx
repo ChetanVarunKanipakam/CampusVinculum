@@ -55,7 +55,7 @@ function App() {
     if (login) {
       switch (user.role) {
         case 'Student':
-          //navigate('/dashboard');
+          navigate('/dashboard');
           break
         case 'Alumini':
           navigate('/alumini/dashboard');
