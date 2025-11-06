@@ -26,7 +26,7 @@ const CreateClubForm = () => {
       const createdDate = new Date();
     // Replace with actual admin ID (maybe from auth)
       
-      await axios.post("http://localhost:3000/api/clubs", { name, description, createdDate, adminID: user._id });
+      await axios.post("${import.meta.env.VITE_API_URL}/api/clubs", { name, description, createdDate, adminID: user._id });
       alert("Club created successfully!");
       setName("");
       setDescription("");

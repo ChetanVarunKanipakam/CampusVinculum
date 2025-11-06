@@ -20,7 +20,7 @@ const Jobs = () => {
     
     const getAlumniJobs = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/jobPostings/all');
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/jobPostings/all`);
         console.log(res.data);
         return res.data;
       } catch (err) {

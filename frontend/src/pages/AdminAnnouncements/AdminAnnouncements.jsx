@@ -14,7 +14,7 @@ export default function AnnouncementsPage() {
   });
 
   const fetch = async () => {
-  const res = await axios.get('http://localhost:3000/api/announcements');
+  const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/announcements`);
   const announcements = Array.isArray(res.data)
     ? res.data
     : res.data.announcements || [];
@@ -26,13 +26,13 @@ export default function AnnouncementsPage() {
   useEffect(() => { fetch(); }, []);
 
   const handleSubmit = async () => {
-    await axios.post('http://localhost:3000/api/announcements', form);
+    await axios.post(`${import.meta.env.VITE_API_URL}/api/announcements `, form);
     fetch();
     setForm({ title: '', content: '', targetAudience: 'Student' });
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:3000/api/announcements/${id}`);
+    await axios.delete(`${import.meta.env.VITE_API_URL}/api/announcements/${id}`);
     fetch();
   };
 

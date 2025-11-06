@@ -86,7 +86,7 @@ const FacultySchedules = () => {
     };
 
     try {
-      await axios.post("http://localhost:3000/api/timetable", payload);
+      await axios.post("${import.meta.env.VITE_API_URL}/api/timetable", payload);
       alert("Timetable created successfully!");
       setBranch("");
       setYear("");
@@ -214,7 +214,7 @@ const FacultySchedules = () => {
         variant="contained"
         onClick={async () => {
           try {
-            await axios.post("http://localhost:3000/api/examschedule", {
+            await axios.post("${import.meta.env.VITE_API_URL}/api/examschedule", {
               branch,
               year,
               examType,

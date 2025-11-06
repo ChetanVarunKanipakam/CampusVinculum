@@ -42,7 +42,7 @@ const PostAnnouncementForm = () => {
     };
 
     try {
-      const res = await axios.post('http://localhost:3000/api/announcements', newAnnouncement,{ headers: { Authorization: `Bearer ${token}` } });
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/announcements`, newAnnouncement,{ headers: { Authorization: `Bearer ${token}` } });
       
 
       if (res.status) {

@@ -5,13 +5,11 @@ dotenv.config(); // must be called before using process.env
 const connectDB = async () => {
   try {
     const mongoURI = process.env.MONGO_URI;
-    const dbName = process.env.DB_NAME;
-
+    // const dbName = process.env.DB_NAME;
+    console.log(mongoURI)
     if (!mongoURI) throw new Error('MONGO_URI is undefined');
-    console.log(mongoURI+dbName);
-    await mongoose.connect(mongoURI, {
-      dbName: dbName,
-    });
+    // console.log(mongoURI+dbName);
+    await mongoose.connect(mongoURI);
 
     console.log('✅ MongoDB connected');
   } catch (err) {

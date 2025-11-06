@@ -8,7 +8,7 @@ const user = token ? jwtDecode(token) : null;
 export const GetUserData = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:3000/api/users/${user.id}`,
+      `${import.meta.env.VITE_API_URL}/api/users/${user.id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return await response.data;
@@ -20,7 +20,7 @@ export const GetUserData = async () => {
 export const GetStudentData = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:3000/api/students/profile`,
+      `${import.meta.env.VITE_API_URL}/api/students/profile`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     

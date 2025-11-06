@@ -54,7 +54,7 @@ const Timetable = ({ user }) => {
   useEffect(() => {
     const fetchTimetable = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/timetable", {
+        const res = await axios.get("${import.meta.env.VITE_API_URL}/api/timetable", {
           params: {
             year: user?.roleDetails?.year,
             section: user?.roleDetails?.section,

@@ -20,7 +20,7 @@ export default function DepartmentsPage() {
   const [form, setForm] = useState({ name: '', description: '' });
 
   const fetch = async () => {
-    const { data } = await axios.get('http://localhost:3000/api/departments', {
+    const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/departments`, {
       params: { q, page, limit: PAGE_SIZE }
     });
     setDepts(data.items || []);
@@ -30,14 +30,14 @@ export default function DepartmentsPage() {
   useEffect(() => { fetch(); }, [q, page]);
 
   const handleAdd = async () => {
-    await axios.post('http://localhost:3000/api/departments', form);
+    await axios.post(`${import.meta.env.VITE_API_URL}/api/departments`, form);
     fetch();
     setOpenAdd(false);
     setForm({ name: '', description: '' });
   };
 
   const handleEdit = async () => {
-    await axios.put(`http://localhost:3000/api/departments/${curDept._id}`, { description: form.description });
+    await axios.put(`${import.meta.env.VITE_API_URL}/api/departments/${curDept._id}`, { description: form.description });
     fetch();
     setOpenEdit(false);
     setCurDept(null);

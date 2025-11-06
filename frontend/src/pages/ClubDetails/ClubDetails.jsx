@@ -38,10 +38,10 @@ const ClubDetails = () => {
     setLoading(true)
     const fetchClub = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/clubs/name/${clubName}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/clubs/name/${clubName}`);
         setClub(res.data); 
         // Expected shape: { description, events, members }
-        const membersRes = await axios.get(`http://localhost:3000/api/clubMemberships/${res.data._id}`);
+        const membersRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/clubMemberships/${res.data._id}`);
         setMembers(membersRes.data);
         console.log("DATA",membersRes)
       } catch (err) {

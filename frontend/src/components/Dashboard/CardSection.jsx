@@ -29,7 +29,7 @@ const CardSection = ({ skillsset = [], achievementsset = [], clubs = [], clubNot
   const handleAddSkill = async () => {
     if (!newSkill.trim()) return;
     await axios.post(
-      "http://localhost:3000/api/students/skills",
+      "${import.meta.env.VITE_API_URL}/api/students/skills",
       { skill: newSkill },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -40,7 +40,7 @@ const CardSection = ({ skillsset = [], achievementsset = [], clubs = [], clubNot
   const handleAddAchievement = async () => {
     if (!newAchievement.trim()) return;
     await axios.post(
-      "http://localhost:3000/api/students/achievements",
+      "${import.meta.env.VITE_API_URL}/api/students/achievements",
       { achievement: newAchievement },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -49,7 +49,7 @@ const CardSection = ({ skillsset = [], achievementsset = [], clubs = [], clubNot
   };
 
   const handleDeleteSkill = async (skill) => {
-    await axios.delete("http://localhost:3000/api/students/skills", {
+    await axios.delete("${import.meta.env.VITE_API_URL}/api/students/skills", {
       data: { skill },
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -57,7 +57,7 @@ const CardSection = ({ skillsset = [], achievementsset = [], clubs = [], clubNot
   };
 
   const handleDeleteAchievement = async (achievement) => {
-    await axios.delete("http://localhost:3000/api/students/achievements", {
+    await axios.delete("${import.meta.env.VITE_API_URL}/api/students/achievements", {
       data: { achievement },
       headers: { Authorization: `Bearer ${token}` },
     });
