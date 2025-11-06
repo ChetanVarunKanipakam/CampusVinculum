@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import Navbar from './common/navbar/navbar.jsx';
-import SidebarMenu from './common/sidebar/Sidebar.jsx';
+import Navbar from './common/Navbar/Navbar.jsx';
+import SidebarMenu from './common/Sidebar/Sidebar.jsx';
 import { BrowserRouter, Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import EventForm from "./features/events/EventForm.jsx";
 import Signup from './pages/Signup/Signup.jsx';
