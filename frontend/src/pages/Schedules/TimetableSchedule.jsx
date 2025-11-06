@@ -54,14 +54,14 @@ const Timetable = ({ user }) => {
   useEffect(() => {
     const fetchTimetable = async () => {
       try {
-        const res = await axios.get("${import.meta.env.VITE_API_URL}/api/timetable", {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/timetable`, {
           params: {
             year: user?.roleDetails?.year,
             section: user?.roleDetails?.section,
             branch: user?.departmentID?.name,
           },
         });
-
+        console.log(res)
         setTimetable(res.data.timetable);
         setTimeSlots(res.data.timeSlots);
         setDays(res.data.days);
