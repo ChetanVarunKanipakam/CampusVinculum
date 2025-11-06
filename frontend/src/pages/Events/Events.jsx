@@ -1,5 +1,5 @@
 import React from "react";
-import SidebarMenu from "../../common/sidebar/Sidebar";
+import SidebarMenu from "../../common/Sidebar/Sidebar";
 import {
   Box,
   Typography,

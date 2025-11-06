@@ -21,7 +21,7 @@ import LiveTvIcon from "@mui/icons-material/LiveTv";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import DoneIcon from "@mui/icons-material/Done";
 import UpcomingIcon from "@mui/icons-material/Update";
-import SidebarMenu from "../../common/sidebar/Sidebar";
+import SidebarMenu from "../../common/Sidebar/Sidebar";
 import NotificationButton from "../../common/NotificationButton/NotificationButton";
 
 const sessions = [

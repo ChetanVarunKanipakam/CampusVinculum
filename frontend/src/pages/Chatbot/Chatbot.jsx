@@ -1,4 +1,4 @@
-import SidebarMenu from "../../common/sidebar/Sidebar";
+import SidebarMenu from "../../common/Sidebar/Sidebar";
 import React, { useState,useEffect,useRef } from "react";
 import {
   Box,

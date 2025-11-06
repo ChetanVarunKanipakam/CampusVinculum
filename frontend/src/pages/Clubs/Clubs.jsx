@@ -25,7 +25,7 @@ import PsychologyIcon from "@mui/icons-material/Psychology";
 import MemoryIcon from "@mui/icons-material/Memory";
 import TheaterComedyIcon from "@mui/icons-material/TheaterComedy";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
-import SidebarMenu from "../../common/sidebar/Sidebar";
+import SidebarMenu from "../../common/Sidebar/Sidebar";
 import NotificationButton from "../../common/NotificationButton/NotificationButton";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
