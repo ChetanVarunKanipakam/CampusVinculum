@@ -47,7 +47,7 @@ const AluminiJobs = ()=>{
         alert("fetching user please wait");
       }
       formData.postedBy=userData.roleDetails._id;
-      const res = await axios.post('http://localhost:3000/api/jobPostings', formData,{ headers: { Authorization: `Bearer ${token}` } });
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/jobPostings`, formData,{ headers: { Authorization: `Bearer ${token}` } });
       alert('Job posted successfully');
     } catch (err) {
       console.error(err);

@@ -14,7 +14,7 @@ const JobPostings = () => {
         setLoading(true);
         const u = await GetUserData();
         setUser(u);
-        const res = await axios.get("http://localhost:3000/api/jobPostings",{ headers: { Authorization: `Bearer ${token}` } }); // adjust route if needed
+        const res = await axios.get("${import.meta.env.VITE_API_URL}/api/jobPostings",{ headers: { Authorization: `Bearer ${token}` } }); // adjust route if needed
         setJobs(res);
       } catch (err) {
         console.error(err);

@@ -128,7 +128,7 @@ const Clubs = () => {
   
   const fetchClubs = async (username) => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/clubs/${encodeURIComponent(username)}`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/clubs/${encodeURIComponent(username)}`);
       console.log(res);
       setClubs(res.data.clubs || []);
       if(res.message){

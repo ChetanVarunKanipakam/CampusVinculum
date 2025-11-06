@@ -22,7 +22,7 @@ export default function UsersPage() {
   });
 
   const fetchUsers = async () => {
-    const res = await axios.get('http://localhost:3000/api/users', {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`, {
       params: { q, page, limit: PAGE_SIZE }
     });
     setUsers(res.data.items || []);
@@ -31,7 +31,7 @@ export default function UsersPage() {
   };
 
   const fetchDepartments = async () => {
-    const res = await axios.get('http://localhost:3000/api/departments');
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/departments`);
     const data = Array.isArray(res.data) ? res.data : res.data.items || [];
     setDepartments(data.items || data); // support for paginated or direct list
   };
@@ -42,19 +42,19 @@ export default function UsersPage() {
   }, [q, page]);
 
   const handleAddUser = async () => {
-    await axios.post('http://localhost:3000/api/users', curUser);
+    await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, curUser);
     setOpenAdd(false);
     fetchUsers();
   };
 
   const handleUpdateUser = async () => {
-    await axios.put(`http://localhost:3000/api/users/${curUser._id}`, curUser);
+    await axios.put(`${import.meta.env.VITE_API_URL}/api/users/${curUser._id}`, curUser);
     setOpenEdit(false);
     fetchUsers();
   };
 
   const handleDeleteUser = async (id) => {
-    await axios.delete(`http://localhost:3000/api/users/${id}`);
+    await axios.delete(`${import.meta.env.VITE_API_URL}/api/users/${id}`);
     fetchUsers();
   };
 

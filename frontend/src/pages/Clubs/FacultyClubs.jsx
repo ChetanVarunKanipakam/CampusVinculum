@@ -81,7 +81,7 @@ const FacultyClubs = () => {
 
 const fetchFacultyClubs = async (username) => {
   try {
-    const res = await axios.get(`http://localhost:3000/api/clubs/${username}`);
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/clubs/${username}`);
     setClubs(res.data.clubs || []);
   } catch (error) {
     console.error("Failed to fetch faculty clubs", error);

@@ -1,6 +1,6 @@
 const apiRoutes = {
-  loginURI: "http://localhost:3000/api/users/login",
-  chatbotURI: "http://localhost:3000/api/chatbotQueries"
+  loginURI:  `${import.meta.env.VITE_API_URL}/api/users/login`,
+  chatbotURI: `${import.meta.env.VITE_API_URL}/api/chatbotQueries`
 };
 
 export { apiRoutes };

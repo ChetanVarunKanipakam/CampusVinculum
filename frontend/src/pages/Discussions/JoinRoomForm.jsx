@@ -17,7 +17,7 @@ export default function JoinRoomForm({ username, room, setRoom, joinRoom, darkMo
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/clubs/rooms/${username}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/clubs/rooms/${username}`);
         const normalRooms=res.data.normalRooms;
         console.log(normalRooms);
         setRooms(normalRooms);

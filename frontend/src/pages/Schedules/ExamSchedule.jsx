@@ -24,7 +24,7 @@ const ExamSchedule = ({user}) => {
 
   const fetchExams = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:3000/api/examschedule/${user?.departmentID?.name}/${ user?.roleDetails?.year}`);
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/examschedule/${user?.departmentID?.name}/${ user?.roleDetails?.year}`);
       setExams(data);
     } catch (err) {
       console.error("Failed to fetch exams:", err);
