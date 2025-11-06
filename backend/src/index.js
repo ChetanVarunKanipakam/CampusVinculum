@@ -24,7 +24,7 @@ import {server , app} from './utils/socket.js';
 
 
 app.use(cors({
-  origin: ["http://localhost:5173"], 
+  origin: ["http://localhost:5173","https://campus-vinculum-cv.vercel.app"], 
   credentials: true             
 }));
 app.use(express.json());

@@ -12,7 +12,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa6";
 import { BsTwitterX } from "react-icons/bs";
 import { FaGlobe } from "react-icons/fa";
-import profPic from "@/assets/profpic.jpg";
+
 // import { GetUserData } from "@/utils/userApi";
 // import Loading from "@/components/Loading/Loading";
 // import { useSelector } from "react-redux";
