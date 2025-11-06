@@ -11,7 +11,7 @@ import { BsRobot, BsTwitterX } from "react-icons/bs";
 import { AiOutlineCalendar } from "react-icons/ai";
 import { HiOutlineBriefcase } from "react-icons/hi";
 import logo from "@/assets/logo.png";
-import profPic from "@/assets/profPic.jpg";
+import profPic from "@/assets/profpic.jpg";
 import defaultPic from "@/assets/default-avatar.jpg";
 import { GetUserData } from "../../utils/userApi";
 import LogoutButton from "../../components/Logout/LogoutButton";
