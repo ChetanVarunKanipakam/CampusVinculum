@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Box } from "@mui/material";
-import SidebarMenu from "../../common/sidebar/Sidebar";
+import SidebarMenu from "../../common/Sidebar/Sidebar";
 import NotificationButton from "../../common/NotificationButton/NotificationButton";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader";
 import CardSection from "../../components/Dashboard/CardSection";

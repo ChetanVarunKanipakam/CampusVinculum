@@ -1,14 +1,14 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Box, Typography, Grid, Button, Paper } from "@mui/material";
-import SidebarMenu from "../../common/sidebar/Sidebar.jsx";
+import SidebarMenu from "../../common/Sidebar/Sidebar.jsx";
 import NotificationButton from "../../common/NotificationButton/NotificationButton.jsx";
 import DashboardHeader from "../../components/Dashboard/DashboardHeader.jsx";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import SchoolIcon from "@mui/icons-material/School";
 import GroupsIcon from "@mui/icons-material/Groups";
 import CampaignIcon from "@mui/icons-material/Campaign";
-import Navbar from "../../common/navbar/navbar.jsx";
+import Navbar from "../../common/Navbar/Navbar.jsx";
 
 const QuickActionCard = ({ icon, title, description, onClick }) => (
   <Paper elevation={6} sx={{ p: 3, borderRadius: 4, textAlign: "center" }}>
