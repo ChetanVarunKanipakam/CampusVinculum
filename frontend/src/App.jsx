@@ -3,7 +3,6 @@ import './App.css';
 import Navbar from './common/Navbar/Navbar.jsx';
 import SidebarMenu from './common/Sidebar/Sidebar.jsx';
 import { BrowserRouter, Route, Routes, useNavigate, useLocation } from "react-router-dom";
-import EventForm from "./features/events/EventForm.jsx";
 import Signup from './pages/Signup/Signup.jsx';
 import Login from './pages/Login/Login.jsx';
 import ErrorPage from './pages/ErrorPage/ErrorPage.jsx';
@@ -31,8 +30,6 @@ import AluminiJobPostings from './pages/Jobs/AluminiJobPostings.jsx';
 import AluminiJobs from './pages/Jobs/AluminiJobs.jsx';
 import FacultySidebarMenu from './common/Sidebar/FacultySidebar.jsx';
 import AluminiSidebar from './common/Sidebar/aluminiSidebar.jsx';
-import EventPage from "./features/events/Eventpage.jsx";
-
 
 import { jwtDecode } from 'jwt-decode';
 import Loading from './components/Loading/Loading.jsx';
@@ -142,7 +139,7 @@ function App() {
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/events" element={<Events />} />
             <Route path="/notifications" element={<Notification />} />
-            <Route path="/create-event" element={<EventForm />} />
+            {/* <Route path="/create-event" element={<EventForm />} /> */}
             <Route path="/events/:eventName" element={<EventDetails />} />
             <Route path="/faculty" element={<FacultyDashboard />} />
             <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
@@ -156,7 +153,7 @@ function App() {
             <Route path="/alumini/dashboard" element={<AluminiDashboard />} />
             <Route path="/alumini/chatbot" element={<Chatbot />} />
             <Route path="/alumini/jobs" element={<AluminiJobs />} />
-            <Route path="/event" element={<EventPage />} />
+            {/* <Route path="/event" element={<EventPage />} /> */}
           </Routes>
         </main>
       </div>
