@@ -30,7 +30,7 @@ import AluminiJobPostings from './pages/Jobs/AluminiJobPostings.jsx';
 import AluminiJobs from './pages/Jobs/AluminiJobs.jsx';
 import FacultySidebarMenu from './common/Sidebar/FacultySidebar.jsx';
 import AluminiSidebar from './common/Sidebar/aluminiSidebar.jsx';
-
+import LandingPage from './common/LandingPage/LandingPage.jsx';
 import { jwtDecode } from 'jwt-decode';
 import Loading from './components/Loading/Loading.jsx';
 import ProfileComponent from './pages/Profile/Profile.jsx';
@@ -71,7 +71,7 @@ function App() {
       setuser1(user);
       setAuth(login);
     } else {
-      navigate("/login");
+      // navigate("/login");
       setLoading(false)
     }
     
@@ -84,16 +84,18 @@ function App() {
   }
   const isDiscussionRoute = location.pathname === "/discussions";
   const isclubDetails = location.pathname.startsWith("/clubs/");
-  if (!auth) {
-    return (
-      <Routes>
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/user/page_not_found" element={<ErrorPage />} />
-        <Route path="*" element={<ErrorPage/>} />
-      </Routes>
-    );
-  }
+ if (!auth) {
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/user/page_not_found" element={<ErrorPage />} />
+      <Route path="*" element={<ErrorPage />} />
+    </Routes>
+  );
+}
+
 
   
   if (isDiscussionRoute ) {
